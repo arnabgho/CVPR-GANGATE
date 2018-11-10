@@ -1,0 +1,25 @@
+\section{Introduction}
+Generative methods have made huge strides in the last few years driven by the success of Variational Autoencoders (VAEs)~\cite{kingma2013auto} and Generative Adversarial Networks (GANs)~\cite{goodfellow2014generative}. 
+While these methods can generate impressive results, one major challenge is that the quality degrades quickly when the diversity of training data increases, especially when the manifold of the multi-class distribution of images drawn from the ground truth distribution is not continuous. \ow{um... I don't really get this previous sentence}
+
+We propose a solution to generate multi-class images that outperforms a single state-of-the-art GAN, while requiring significantly fewer parameters than a single GAN per-class. 
+To do this, we take advantage of similarities across classes, and propose a fully-residual GAN architecture. 
+The residual nature allows a second, ``gating'' network to determine which set of generator and discriminator blocks to use conditioned on the input class. \ow{explaintion gets harder if ``our'' method is channelwise}
+
+
+Our approach is essentially a form of conditioning, using a second gating network to condition the generator and discriminator. 
+We therefore conduct an extensive set of experiments to evaluate our conditioning method versus other forms of conditioning, for example concatenating one-hot class information, auxillary classification, \todo{...}.
+\ow{describe high level idea and outcome of the 1d experiments}
+
+\ow{move to related work or preliminary section}
+Conditioning by concatenation is a weak form of conditioning because by information theoretic principles, the deeper the network the lesser mutual information is preserved between the conditioning input and the output of the network. To mitigate this issue some other solutions such as the projection discriminator \cite{miyato2018cgans} have been proposed and our residual gate selection block on the discriminator is along similar lines. 
+
+We evaluate our gating approach on a number of applications \todo{...}
+\ow{discuss evaluation and findings}
+
+In summary, our Contributions are :
+\begin{itemize}
+\item Incision experiments on a trained Residual Generator based GAN on the 1D Mixture of Gaussians to show certain blocks correspond to certain modes in the generated distribution.
+\item Introduction of the Gated Residual Blocks and the Hypernetwork to predict the corresponding alphas on the Generator and Discriminator.
+\item Introduction of a new task based on Generative Adversarial Networks namely the task of generating high resolution realistic images from very rough and sparse outline like scribbles.
+\end{itemize}
