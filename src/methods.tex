@@ -1,0 +1,57 @@
+
+\paragraph{Architecture}
+
+\section{Gated Residual Block based Generator}
+Inspired by the incision experiments performed on the generator whereby removal of certain blocks led to the removal of particular modes from the data distribution, our model consists of a main network which is oblivious to the condition provided to the network, while another hypernetwork only receives the condition and has to predict which block should be used to what extent. More precisely, the $i^{th}$ residual block now receives an extra input $\alpha_i$ alongside the usual $x$ and the output of the gated residual block is $x+\alpha_i*f_i(x)$ rather than the standard $x+f_i(x)$. The $alpha_i$s are predicted via another hypernetwork which only receives the condition and has no idea about the input being received by the main block. The interpretation of the above is that if some block doesn't have to be used for a particular class then the hypernetwork can just choose the $alpha_i$ close to 0 and effectively that block is switched off. The intuition is that the hypernetwork has to first understand the transformations that the different residual blocks in the generator are learning, then start modulating it such that conditioned on the class the required blocks are chosen to the right extent such that the resulting sequence of transformations corresponds to realistic images from that particular class. Its related to FILM \cite{perez2017film} albeit it does feature wise transform and has to predict more parameters than a single number per block. \figref{fig:gru_gen} illustrates the concept in the setting of the conditional generator. Some other extensions such as affine gating per residual block and channel wise gating with its affine counterpart exists as well apart from the well known Adaptive Instance Normalization \cite{huang2017arbitrary} . The varied forms of gating could be applied to the Infogan setup with the gate prediction block receives the randomly sampled latent as input to decide the gates on the various blocks while the Q network trying to reconstruct back the latent that was passed.
+ 
+\section{Gated Residual Block based Discriminator}
+
+Based on a similar principle as the Generator, the Discriminator can also be equipped with gated residual blocks whereby each residual block would compute $x+\alpha_i*f_i(x)$ in place of the standard $x+f_i(x)$ where each $alpha_i$ is predicted by another hypernetwork which gets the condition that which class is the network currently judging for real/fake. Its intriguing that with just the class information the hypernetwork is able to select blocks which effectively guide the discriminator to judge whether its real/fake conditioned on the class. Via accurate gradients backpropagated to the generator it also enables the generator to generate class conditioned high resolution image samples. Intuitively, the discriminator distributes some common functions between the different classes to some of these shared residual blocks which are activated for all classes while the rest of the transformations it distributes in a non-overlapping manner to some specific residual blocks of the discriminator network. Such a concept can not only be used for the discriminator but in many settings where the conditioning variable is known, for example some plausible applications can be the Q network in InfoGAN\cite{chen2016infogan} or the Conditional Inference Network in a CVAE \cite{sohn2015learning}. \figref{fig:gru_dis} illustrates the concept in the setting of the conditional discriminator. Some other extensions such as affine gating per residual block and channel wise gating with its affine counterpart exists as well apart from Adaptive Instance Normalization(AdaIN) \cite{huang2017arbitrary}
+
+
+\begin{table}[ht]
+\caption{Resblock} % title of Table
+\centering % used for centering table
+\begin{tabular}{c} % centered columns (4 columns)
+\hline\hline %inserts double horizontal lines
+F(x)\\%heading
+\hline % inserts single horizontal line
+Linear(4,4)\\ % inserting body of the table
+ReLU() \\
+Linear(4,4) \\
+\hline %inserts single line
+\end{tabular}
+\label{table:resblock} % is used to refer this table in the text
+\end{table}
+
+
+\begin{table}[ht]
+\caption{Generator} % title of Table
+\centering % used for centering table
+\begin{tabular}{c c} % centered columns (4 columns)
+\hline\hline %inserts double horizontal lines
+layer & num layers\\%heading
+\hline % inserts single horizontal line
+Linear(10,4) & 1\\ % inserting body of the table
+ResBlock & 16 \\
+Linear(4,1) & 1 \\
+\hline %inserts single line
+\end{tabular}
+\label{table:1d_G} % is used to refer this table in the text
+\end{table}
+
+\begin{table}[ht]
+\caption{Discriminator} % title of Table
+\centering % used for centering table
+\begin{tabular}{c c} % centered columns (4 columns)
+\hline\hline %inserts double horizontal lines
+layer & num layers\\%heading
+\hline % inserts single horizontal line
+Linear(1,4) & 1\\ % inserting body of the table
+ResBlock & 16 \\
+Linear(4,1) & 1 \\
+Sigmoid & 1 \\
+\hline %inserts single line
+\end{tabular}
+\label{table:1d_D} % is used to refer this table in the text
+\end{table}
