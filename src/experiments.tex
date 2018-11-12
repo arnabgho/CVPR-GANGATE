@@ -138,12 +138,12 @@ To test the capability of our techniques on the varied kinds of generation tasks
 % \end{figure*}
 
 
-\newcommand{\addSubFigSixth}[2]{\begin{subfigure}[t]{.15\linewidth}
+\newcommand{\addSubFigSixth}[2]{\begin{subfigure}[t]{.12\linewidth}
    \includegraphics[width=\linewidth]{#1}
    \label{#2}\end{subfigure}
 }
 
-\newcommand{\addSubFigSixthLabel}[3]{\begin{subfigure}[t]{.30\linewidth}
+\newcommand{\addSubFigSixthLabel}[3]{\begin{subfigure}[t]{.12\linewidth}
    \includegraphics[width=\linewidth]{#1}
    \caption{#2}\label{#3}\end{subfigure}
 }
@@ -156,6 +156,66 @@ To test the capability of our techniques on the varied kinds of generation tasks
     \addSubFigSixth{channel_gated_affine/basketball_11_fake_B}{fig:basketball_channel_affine}
     \addSubFigSixth{block_gated_affine/basketball_11_fake_B}{fig:basketball_block_affine}
     \addSubFigSixth{adain/basketball_11_fake_B}{fig:basketball_adain}
+    
+    \addSubFigSixthLabel{channel_gated/soccer_18_real_A}{soccer}{fig:soccer_input}
+    \addSubFigSixth{channel_gated/soccer_18_fake_B}{fig:soccer_ours} 
+    \addSubFigSixth{block_gated/soccer_18_fake_B}{fig:soccer_block}
+    \addSubFigSixth{channel_gated_affine/soccer_18_fake_B}{fig:soccer_channel_affine}
+    \addSubFigSixth{block_gated_affine/soccer_18_fake_B}{fig:soccer_block_affine}
+    \addSubFigSixth{adain/soccer_18_fake_B}{fig:soccer_adain}
+    
+    \addSubFigSixthLabel{channel_gated/moon_15_real_A}{moon}{fig:moon_input}
+    \addSubFigSixth{channel_gated/moon_15_fake_B}{fig:moon_ours} 
+    \addSubFigSixth{block_gated/moon_15_fake_B}{fig:moon_block}
+    \addSubFigSixth{channel_gated_affine/moon_15_fake_B}{fig:moon_channel_affine}
+    \addSubFigSixth{block_gated_affine/moon_15_fake_B}{fig:moon_block_affine}
+    \addSubFigSixth{adain/moon_15_fake_B}{fig:moon_adain}
+    
+    
+    \addSubFigSixthLabel{channel_gated/cookie_13_real_A}{cookie}{fig:cookie_input}
+    \addSubFigSixth{channel_gated/cookie_13_fake_B}{fig:cookie_ours} 
+    \addSubFigSixth{block_gated/cookie_13_fake_B}{fig:cookie_block}
+    \addSubFigSixth{channel_gated_affine/cookie_13_fake_B}{fig:cookie_channel_affine}
+    \addSubFigSixth{block_gated_affine/cookie_13_fake_B}{fig:cookie_block_affine}
+    \addSubFigSixth{adain/cookie_13_fake_B}{fig:cookie_adain}
+    
+    
+    \addSubFigSixthLabel{channel_gated/orange_17_real_A}{cookie}{fig:orange_input}
+    \addSubFigSixth{channel_gated/orange_17_fake_B}{fig:orange_ours} 
+    \addSubFigSixth{block_gated/orange_17_fake_B}{fig:orange_block}
+    \addSubFigSixth{channel_gated_affine/orange_17_fake_B}{fig:orange_channel_affine}
+    \addSubFigSixth{block_gated_affine/orange_17_fake_B}{fig:orange_block_affine}
+    \addSubFigSixth{adain/orange_17_fake_B}{fig:orange_adain}
+    
+    \addSubFigSixthLabel{channel_gated/watermelon_17_real_A}{cookie}{fig:watermelon_input}
+    \addSubFigSixth{channel_gated/watermelon_17_fake_B}{fig:watermelon_ours} 
+    \addSubFigSixth{block_gated/watermelon_17_fake_B}{fig:watermelon_block}
+    \addSubFigSixth{channel_gated_affine/watermelon_17_fake_B}{fig:watermelon_channel_affine}
+    \addSubFigSixth{block_gated_affine/watermelon_17_fake_B}{fig:watermelon_block_affine}
+    \addSubFigSixth{adain/watermelon_17_fake_B}{fig:watermelon_adain}
+    
+    \addSubFigSixthLabel{channel_gated/cupcake_27_real_A}{cookie}{fig:cupcake_input}
+    \addSubFigSixth{channel_gated/cupcake_27_fake_B}{fig:cupcake_ours} 
+    \addSubFigSixth{block_gated/cupcake_27_fake_B}{fig:cupcake_block}
+    \addSubFigSixth{channel_gated_affine/cupcake_27_fake_B}{fig:cupcake_channel_affine}
+    \addSubFigSixth{block_gated_affine/cupcake_27_fake_B}{fig:cupcake_block_affine}
+    \addSubFigSixth{adain/cupcake_27_fake_B}{fig:cupcake_adain}
+    
+    
+    \addSubFigSixthLabel{channel_gated/strawberry_1_real_A}{cookie}{fig:strawberry_input}
+    \addSubFigSixth{channel_gated/strawberry_1_fake_B}{fig:strawberry_ours} 
+    \addSubFigSixth{block_gated/strawberry_1_fake_B}{fig:strawberry_block}
+    \addSubFigSixth{channel_gated_affine/strawberry_1_fake_B}{fig:strawberry_channel_affine}
+    \addSubFigSixth{block_gated_affine/strawberry_1_fake_B}{fig:strawberry_block_affine}
+    \addSubFigSixth{adain/strawberry_1_fake_B}{fig:strawberry_adain}
+    
+    \addSubFigSixthLabel{channel_gated/chicken_2_real_A}{cookie}{fig:chicken_input}
+    \addSubFigSixth{channel_gated/chicken_2_fake_B}{fig:chicken_ours} 
+    \addSubFigSixth{block_gated/chicken_2_fake_B}{fig:chicken_block}
+    \addSubFigSixth{channel_gated_affine/chicken_2_fake_B}{fig:chicken_channel_affine}
+    \addSubFigSixth{block_gated_affine/chicken_2_fake_B}{fig:chicken_block_affine}
+    \addSubFigSixth{adain/chicken_2_fake_B}{fig:chicken_adain}
+    
     \caption{Various Gating Mechanisms}
     \label{fig:multi-task_cityscapes}
     \vspace{-3mm}
