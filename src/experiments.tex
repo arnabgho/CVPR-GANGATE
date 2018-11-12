@@ -79,94 +79,87 @@ To test the capability of our techniques on the varied kinds of generation tasks
    \caption{#2}\label{#3}\end{subfigure}
 }
 
-\begin{figure*}%[ht!]
-    \centering
-    \addSubFigTenth{acgan_baseline_all/basketball_11_real_A}{}{fig:basketball_scribble} 
-    \addSubFigTenth{acgan_baseline_all/chicken_2_real_A}{}{fig:chicken_scribble} 
-    \addSubFigTenth{acgan_baseline_all/cookie_13_real_A}{}{fig:cookie_scribble}
-    \addSubFigTenth{acgan_baseline_all/cupcake_27_real_A}{}{fig:cupcake_scribble}
-    \addSubFigTenth{acgan_baseline_all/moon_15_real_A}{}{fig:moon_scribble}
-    \addSubFigTenth{acgan_baseline_all/basketball_11_fake_B}{}{fig:basketball_img} 
-    \addSubFigTenth{acgan_baseline_all/chicken_2_fake_B}{}{fig:chicken_img} 
-    \addSubFigTenth{acgan_baseline_all/cookie_13_fake_B}{}{fig:cookie_img}
-    \addSubFigTenth{acgan_baseline_all/cupcake_27_fake_B}{}{fig:cupcake_img}
-    \addSubFigTenth{acgan_baseline_all/moon_15_fake_B}{}{fig:moon_img}
-    \addSubFigTenth{acgan_baseline_all/orange_17_real_A}{}{fig:orange_scribble} 
-    \addSubFigTenth{acgan_baseline_all/pineapple_2_real_A}{}{fig:pineapple_scribble} 
-    \addSubFigTenth{acgan_baseline_all/soccer_18_real_A}{}{fig:soccer_scribble}
-    \addSubFigTenth{acgan_baseline_all/strawberry_1_real_A}{}{fig:strawberry_scribble}
-    \addSubFigTenth{acgan_baseline_all/watermelon_17_real_A}{}{fig:watermelon_scribble}
-    \addSubFigTenth{acgan_baseline_all/orange_17_fake_B}{}{fig:orange_img} 
-    \addSubFigTenth{acgan_baseline_all/pineapple_2_fake_B}{}{fig:pineapple_img} 
-    \addSubFigTenth{acgan_baseline_all/soccer_18_fake_B}{}{fig:soccer_img}
-    \addSubFigTenth{acgan_baseline_all/strawberry_1_fake_B}{}{fig:strawberry_img}
-    \addSubFigTenth{acgan_baseline_all/watermelon_17_fake_B}{}{fig:watermelon_img}
-    \caption{ACGAN baseline with Input Provided to all layers of Generator}
-    \label{fig:scribble_pix2pix}
-    \vspace{-3mm}
-\end{figure*}
 
 
-\begin{figure*}%[ht!]
-    \centering
-    \addSubFigTenth{channel_gated/basketball_11_real_A}{}{fig:basketball_scribble} 
-    \addSubFigTenth{channel_gated/chicken_2_real_A}{}{fig:chicken_scribble} 
-    \addSubFigTenth{channel_gated/cookie_13_real_A}{}{fig:cookie_scribble}
-    \addSubFigTenth{channel_gated/cupcake_27_real_A}{}{fig:cupcake_scribble}
-    \addSubFigTenth{channel_gated/moon_15_real_A}{}{fig:moon_scribble}
-    \addSubFigTenth{channel_gated/basketball_11_fake_B}{}{fig:basketball_img} 
-    \addSubFigTenth{channel_gated/chicken_2_fake_B}{}{fig:chicken_img} 
-    \addSubFigTenth{channel_gated/cookie_13_fake_B}{}{fig:cookie_img}
-    \addSubFigTenth{channel_gated/cupcake_27_fake_B}{}{fig:cupcake_img}
-    \addSubFigTenth{channel_gated/moon_15_fake_B}{}{fig:moon_img}
-    \addSubFigTenth{channel_gated/orange_17_real_A}{}{fig:orange_scribble} 
-    \addSubFigTenth{channel_gated/pineapple_2_real_A}{}{fig:pineapple_scribble} 
-    \addSubFigTenth{channel_gated/soccer_18_real_A}{}{fig:soccer_scribble}
-    \addSubFigTenth{channel_gated/strawberry_1_real_A}{}{fig:strawberry_scribble}
-    \addSubFigTenth{channel_gated/watermelon_17_real_A}{}{fig:watermelon_scribble}
-    \addSubFigTenth{channel_gated/orange_17_fake_B}{}{fig:orange_img} 
-    \addSubFigTenth{channel_gated/pineapple_2_fake_B}{}{fig:pineapple_img} 
-    \addSubFigTenth{channel_gated/soccer_18_fake_B}{}{fig:soccer_img}
-    \addSubFigTenth{channel_gated/strawberry_1_fake_B}{}{fig:strawberry_img}
-    \addSubFigTenth{channel_gated/watermelon_17_fake_B}{}{fig:watermelon_img}
-    \caption{Gated (Channel/Alpha) Results}
-    \label{fig:scribble_pix2pix}
-    \vspace{-3mm}
-\end{figure*}
 
-
-\newcommand{\addSubFigSixth}[3]{\begin{subfigure}[t]{.30\linewidth}
-   \includegraphics[width=\linewidth]{#1}
-   \caption{#2}\label{#3}\end{subfigure}
-}
 % \begin{figure*}%[ht!]
 %     \centering
-%     \addSubFigSixth{Picture27}{Pizza On Orange}{fig:bag_sketch} 
-%     \addSubFigSixth{Picture28}{Pizza on Pizza}{fig:bag_1} 
-%     \addSubFigSixth{Picture29}{Pizza on Orange}{fig:bag_2}
-%     \addSubFigSixth{Picture30}{Pizza on Strawberry}{fig:bag_3}
-%     \addSubFigSixth{Picture31}{Strawberry on Orange}{fig:bag_4}
-%     \addSubFigSixth{Picture32}{Orange on Orange}{fig:bag_4}
-%     \caption{Pix2pix fails when there are multi-class mappings from similar scribbles to the varying classes}
+%     \addSubFigTenth{acgan_baseline_all/basketball_11_real_A}{}{fig:basketball_scribble} 
+%     \addSubFigTenth{acgan_baseline_all/chicken_2_real_A}{}{fig:chicken_scribble} 
+%     \addSubFigTenth{acgan_baseline_all/cookie_13_real_A}{}{fig:cookie_scribble}
+%     \addSubFigTenth{acgan_baseline_all/cupcake_27_real_A}{}{fig:cupcake_scribble}
+%     \addSubFigTenth{acgan_baseline_all/moon_15_real_A}{}{fig:moon_scribble}
+%     \addSubFigTenth{acgan_baseline_all/basketball_11_fake_B}{}{fig:basketball_img} 
+%     \addSubFigTenth{acgan_baseline_all/chicken_2_fake_B}{}{fig:chicken_img} 
+%     \addSubFigTenth{acgan_baseline_all/cookie_13_fake_B}{}{fig:cookie_img}
+%     \addSubFigTenth{acgan_baseline_all/cupcake_27_fake_B}{}{fig:cupcake_img}
+%     \addSubFigTenth{acgan_baseline_all/moon_15_fake_B}{}{fig:moon_img}
+%     \addSubFigTenth{acgan_baseline_all/orange_17_real_A}{}{fig:orange_scribble} 
+%     \addSubFigTenth{acgan_baseline_all/pineapple_2_real_A}{}{fig:pineapple_scribble} 
+%     \addSubFigTenth{acgan_baseline_all/soccer_18_real_A}{}{fig:soccer_scribble}
+%     \addSubFigTenth{acgan_baseline_all/strawberry_1_real_A}{}{fig:strawberry_scribble}
+%     \addSubFigTenth{acgan_baseline_all/watermelon_17_real_A}{}{fig:watermelon_scribble}
+%     \addSubFigTenth{acgan_baseline_all/orange_17_fake_B}{}{fig:orange_img} 
+%     \addSubFigTenth{acgan_baseline_all/pineapple_2_fake_B}{}{fig:pineapple_img} 
+%     \addSubFigTenth{acgan_baseline_all/soccer_18_fake_B}{}{fig:soccer_img}
+%     \addSubFigTenth{acgan_baseline_all/strawberry_1_fake_B}{}{fig:strawberry_img}
+%     \addSubFigTenth{acgan_baseline_all/watermelon_17_fake_B}{}{fig:watermelon_img}
+%     \caption{ACGAN baseline with Input Provided to all layers of Generator}
 %     \label{fig:scribble_pix2pix}
 %     \vspace{-3mm}
 % \end{figure*}
 
+
 % \begin{figure*}%[ht!]
 %     \centering
-%     \addSubFigSixth{Picture15}{Pizza 1}{fig:pizza_1} 
-%     \addSubFigSixth{Picture16}{Pizza 2}{fig:pizza_2} 
-%     \addSubFigSixth{Picture17}{Pizza 3}{fig:pizza_3}
-%     \addSubFigSixth{Picture19}{Strawberry 1}{fig:strawberry_1}
-%     \addSubFigSixth{Picture20}{Strawberry 2}{fig:strawberry_2}
-%     \addSubFigSixth{Picture21}{Strawberry 3}{fig:strawberry 3}
-%     \addSubFigSixth{Picture23}{Orange 1}{fig:orange_1}
-%     \addSubFigSixth{Picture24}{Orange 2}{fig:orange_2}
-%     \addSubFigSixth{Picture25}{Orange 3}{fig:orange_3}
-%     \caption{Pix2pix fails when there are multi-class mappings from similar scribbles to the varying classes}
-%     \label{fig:scribble_grb}
+%     \addSubFigTenth{channel_gated/basketball_11_real_A}{}{fig:basketball_scribble} 
+%     \addSubFigTenth{channel_gated/chicken_2_real_A}{}{fig:chicken_scribble} 
+%     \addSubFigTenth{channel_gated/cookie_13_real_A}{}{fig:cookie_scribble}
+%     \addSubFigTenth{channel_gated/cupcake_27_real_A}{}{fig:cupcake_scribble}
+%     \addSubFigTenth{channel_gated/moon_15_real_A}{}{fig:moon_scribble}
+%     \addSubFigTenth{channel_gated/basketball_11_fake_B}{}{fig:basketball_img} 
+%     \addSubFigTenth{channel_gated/chicken_2_fake_B}{}{fig:chicken_img} 
+%     \addSubFigTenth{channel_gated/cookie_13_fake_B}{}{fig:cookie_img}
+%     \addSubFigTenth{channel_gated/cupcake_27_fake_B}{}{fig:cupcake_img}
+%     \addSubFigTenth{channel_gated/moon_15_fake_B}{}{fig:moon_img}
+%     \addSubFigTenth{channel_gated/orange_17_real_A}{}{fig:orange_scribble} 
+%     \addSubFigTenth{channel_gated/pineapple_2_real_A}{}{fig:pineapple_scribble} 
+%     \addSubFigTenth{channel_gated/soccer_18_real_A}{}{fig:soccer_scribble}
+%     \addSubFigTenth{channel_gated/strawberry_1_real_A}{}{fig:strawberry_scribble}
+%     \addSubFigTenth{channel_gated/watermelon_17_real_A}{}{fig:watermelon_scribble}
+%     \addSubFigTenth{channel_gated/orange_17_fake_B}{}{fig:orange_img} 
+%     \addSubFigTenth{channel_gated/pineapple_2_fake_B}{}{fig:pineapple_img} 
+%     \addSubFigTenth{channel_gated/soccer_18_fake_B}{}{fig:soccer_img}
+%     \addSubFigTenth{channel_gated/strawberry_1_fake_B}{}{fig:strawberry_img}
+%     \addSubFigTenth{channel_gated/watermelon_17_fake_B}{}{fig:watermelon_img}
+%     \caption{Gated (Channel/Alpha) Results}
+%     \label{fig:scribble_pix2pix}
 %     \vspace{-3mm}
 % \end{figure*}
+
+
+\newcommand{\addSubFigSixth}[2]{\begin{subfigure}[t]{.15\linewidth}
+   \includegraphics[width=\linewidth]{#1}
+   \label{#2}\end{subfigure}
+}
+
+\newcommand{\addSubFigSixthLabel}[3]{\begin{subfigure}[t]{.30\linewidth}
+   \includegraphics[width=\linewidth]{#1}
+   \caption{#2}\label{#3}\end{subfigure}
+}
+
+\begin{figure*}%[ht!]
+    \centering
+    \addSubFigSixthLabel{channel_gated/basketball_11_real_A}{basketball}{fig:basketball_input} 
+    \addSubFigSixth{channel_gated/basketball_11_fake_B}{fig:basketball_ours} 
+    \addSubFigSixth{block_gated/basketball_11_fake_B}{fig:basketball_block}
+    \addSubFigSixth{channel_gated_affine/basketball_11_fake_B}{fig:basketball_channel_affine}
+    \addSubFigSixth{block_gated_affine/basketball_11_fake_B}{fig:basketball_block_affine}
+    \addSubFigSixth{adain/basketball_11_fake_B}{fig:basketball_adain}
+    \caption{Various Gating Mechanisms}
+    \label{fig:multi-task_cityscapes}
+    \vspace{-3mm}
+\end{figure*}
 
 In the widely popular image conditioned generative models introduced in Pix2pix by \cite{isola2016image2image} although the results are brilliant, it had the inherent problem of only being applicable to a particular task such as different networks had to be trained for edges to shoes and edges to handbags, although StarGAN \cite{choi2017stargan} mitigated some of the problems but it was only applicable for relatively minute transformations such as changing the characteristics of the face.
 
@@ -298,7 +291,7 @@ Since our network is robust enough to be able to generate images conditioned on 
     \centering
     \addSubFigEighth{channel_gated/cityscapes_95_real_A}{input}{fig:city_input} 
     \addSubFigEighth{channel_gated/cityscapes_95_fake_B}{Ours}{fig:city_ours} 
-    \addSubFigEighth{munit_all/cityscapes_95_fake_B}{MUNIT Conditioning all layers}{fig:city_munit}
+    \addSubFigEighth{munit_baseline_all/cityscapes_95_fake_B}{MUNIT Conditioning all layers}{fig:city_munit}
     \addSubFigEighth{our_baseline_all/cityscapes_95_fake_B}{Our Architecture Conditioning all layers}{fig:bag_3}
     \addSubFigEighth{acgan_baseline_all/cityscapes_95_fake_B}{ACAN (our Architecture Conditioning all layers) }{fig:bag_3}
     \caption{Various Methods for Cityscapes for Multi-Task Experiment}
@@ -310,7 +303,7 @@ Since our network is robust enough to be able to generate images conditioned on 
     \centering
     \addSubFigEighth{channel_gated/night2day_58_5018_to_5000_real_A}{input}{fig:city_input} 
     \addSubFigEighth{channel_gated/night2day_58_5018_to_5000_fake_B}{Ours}{fig:city_ours} 
-    \addSubFigEighth{munit_all/night2day_58_5018_to_5000_fake_B}{MUNIT Conditioning all layers}{fig:city_munit}
+    \addSubFigEighth{munit_baseline_all/night2day_58_5018_to_5000_fake_B}{MUNIT Conditioning all layers}{fig:city_munit}
     \addSubFigEighth{our_baseline_all/night2day_58_5018_to_5000_fake_B}{Our Architecture Conditioning all layers}{fig:bag_3}
     \addSubFigEighth{acgan_baseline_all/night2day_58_5018_to_5000_fake_B}{ACAN (our Architecture Conditioning all layers) }{fig:bag_3}
     \caption{Various Methods for Day2Night for Multi-Task Experiment}
