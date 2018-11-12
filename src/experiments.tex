@@ -301,43 +301,23 @@ Since our network is robust enough to be able to generate images conditioned on 
     \addSubFigEighth{munit_all/cityscapes_95_fake_B}{MUNIT Conditioning all layers}{fig:city_munit}
     \addSubFigEighth{our_baseline_all/cityscapes_95_fake_B}{Our Architecture Conditioning all layers}{fig:bag_3}
     \addSubFigEighth{acgan_baseline_all/cityscapes_95_fake_B}{ACAN (our Architecture Conditioning all layers) }{fig:bag_3}
-    \caption{Gated(Channel/Alpha) Multi-Task}
-    \label{fig:channel_gated_multi-task}
+    \caption{Various Methods for Cityscapes for Multi-Task Experiment}
+    \label{fig:multi-task_cityscapes}
     \vspace{-3mm}
 \end{figure*}
 
 \begin{figure*}%[ht!]
     \centering
-    \addSubFigEighth{unet_all/cityscapes_95_real_A}{}{fig:bag_sketch} 
-    \addSubFigEighth{unet_all/cityscapes_95_fake_B}{}{fig:bag_1} 
-    \addSubFigEighth{unet_all/night2day_58_5018_to_5000_real_A}{}{fig:bag_2}
-    \addSubFigEighth{unet_all/night2day_58_5018_to_5000_fake_B}{}{fig:bag_3}
-    \caption{U-Net (conditioning all layers) Multi-Task}
-    \label{fig:channel_gated_multi-task}
+    \addSubFigEighth{channel_gated/night2day_58_5018_to_5000_real_A}{input}{fig:city_input} 
+    \addSubFigEighth{channel_gated/night2day_58_5018_to_5000_fake_B}{Ours}{fig:city_ours} 
+    \addSubFigEighth{munit_all/night2day_58_5018_to_5000_fake_B}{MUNIT Conditioning all layers}{fig:city_munit}
+    \addSubFigEighth{our_baseline_all/night2day_58_5018_to_5000_fake_B}{Our Architecture Conditioning all layers}{fig:bag_3}
+    \addSubFigEighth{acgan_baseline_all/night2day_58_5018_to_5000_fake_B}{ACAN (our Architecture Conditioning all layers) }{fig:bag_3}
+    \caption{Various Methods for Day2Night for Multi-Task Experiment}
+    \label{fig:multi-task_day2night}
     \vspace{-3mm}
 \end{figure*}
 
-\begin{figure*}%[ht!]
-    \centering
-    \addSubFigEighth{our_baseline_all/cityscapes_95_real_A}{}{fig:bag_sketch} 
-    \addSubFigEighth{our_baseline_all/cityscapes_95_fake_B}{}{fig:bag_1} 
-    \addSubFigEighth{our_baseline_all/night2day_58_5018_to_5000_real_A}{}{fig:bag_2}
-    \addSubFigEighth{our_baseline_all/night2day_58_5018_to_5000_fake_B}{}{fig:bag_3}
-    \caption{Our Architecture (conditioning all layers) Multi-Task}
-    \label{fig:channel_gated_multi-task}
-    \vspace{-3mm}
-\end{figure*}
-
-\begin{figure*}%[ht!]
-    \centering
-    \addSubFigEighth{acgan_baseline_all/cityscapes_95_real_A}{}{fig:bag_sketch} 
-    \addSubFigEighth{acgan_baseline_all/cityscapes_95_fake_B}{}{fig:bag_1} 
-    \addSubFigEighth{acgan_baseline_all/night2day_58_5018_to_5000_real_A}{}{fig:bag_2}
-    \addSubFigEighth{acgan_baseline_all/night2day_58_5018_to_5000_fake_B}{}{fig:bag_3}
-    \caption{Our Architecture + AC-GAN (conditioning all layers) Multi-Task}
-    \label{fig:channel_gated_multi-task}
-    \vspace{-3mm}
-\end{figure*}
 
 \section{Planned Set of Experiments:}
 \subsection{Unconditional Generations :}
