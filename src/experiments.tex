@@ -265,11 +265,17 @@ Linear(4,1) & 1 \\
 \subsection{Comparison to other forms of conditioning in Resblock :}
 Conditional Batch Normalization, FiLM and Adaptive Instance Normalization are the techniques which are the most closely related to our methodology. All of these have the benefit of being applicable even without the presence of residual blocks in the architecture. So an exhaustive comparison with all of these methods along with our form of conditioning on the residual blocks is a valid set of experimentation and has to be done to make the paper complete.
 
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=\linewidth]{conditioning_amt.png}
+%     \caption{AMT studies of the various gating techniques on the scribble dataset}\label{fig:conditioning_amt}
+%     \vspace{-4mm}
+% \end{figure}
 \begin{figure}
     \centering
-    \includegraphics[width=\linewidth]{conditioning_amt.png}
-    \caption{AMT studies of the various gating techniques on the scribble dataset}\label{fig:conditioning_amt}
-    \vspace{-4mm}
+    \includegraphics[width=\linewidth]{paper_images/gen_real_vs_acc.pdf}
+    \caption{Generation realism vs accuracy}\label{fig:conditioning_amt}
+    % \vspace{-4mm}
 \end{figure}
 
 The generations on the test set was further corroborated by 
@@ -290,10 +296,11 @@ Since our network is robust enough to be able to generate images conditioned on 
 
 \begin{figure*}%[ht!]
     \centering
-    \addSubFigEighth{channel_gated/cityscapes_95_real_A}{}{fig:bag_sketch} 
-    \addSubFigEighth{channel_gated/cityscapes_95_fake_B}{}{fig:bag_1} 
-    \addSubFigEighth{channel_gated/night2day_58_5018_to_5000_real_A}{}{fig:bag_2}
-    \addSubFigEighth{channel_gated/night2day_58_5018_to_5000_fake_B}{}{fig:bag_3}
+    \addSubFigEighth{channel_gated/cityscapes_95_real_A}{input}{fig:city_input} 
+    \addSubFigEighth{channel_gated/cityscapes_95_fake_B}{Ours}{fig:city_ours} 
+    \addSubFigEighth{munit_all/cityscapes_95_fake_B}{MUNIT Conditioning all layers}{fig:city_munit}
+    \addSubFigEighth{our_baseline_all/cityscapes_95_fake_B}{Our Architecture Conditioning all layers}{fig:bag_3}
+    \addSubFigEighth{acgan_baseline_all/cityscapes_95_fake_B}{ACAN (our Architecture Conditioning all layers) }{fig:bag_3}
     \caption{Gated(Channel/Alpha) Multi-Task}
     \label{fig:channel_gated_multi-task}
     \vspace{-3mm}
@@ -327,7 +334,7 @@ Since our network is robust enough to be able to generate images conditioned on 
     \addSubFigEighth{acgan_baseline_all/cityscapes_95_fake_B}{}{fig:bag_1} 
     \addSubFigEighth{acgan_baseline_all/night2day_58_5018_to_5000_real_A}{}{fig:bag_2}
     \addSubFigEighth{acgan_baseline_all/night2day_58_5018_to_5000_fake_B}{}{fig:bag_3}
-    \caption{Our Architecture (conditioning all layers) Multi-Task}
+    \caption{Our Architecture + AC-GAN (conditioning all layers) Multi-Task}
     \label{fig:channel_gated_multi-task}
     \vspace{-3mm}
 \end{figure*}
