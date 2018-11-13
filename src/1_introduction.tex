@@ -1,11 +1,11 @@
 \section{Introduction}
 Generative methods have made huge strides in the last few years driven by the success of Variational Autoencoders (VAEs)~\cite{kingma2013auto} and Generative Adversarial Networks (GANs)~\cite{goodfellow2014generative}. 
-While these methods can generate impressive results, one major challenge is that quality degrades quickly when the diversity of training data increases, especially when the manifold of the multi-class distribution of images drawn from the ground truth distribution is not continuous. \ow{um... I don't really get this previous sentence}
+While these methods can generate impressive results, one major challenge is that quality degrades quickly when the diversity of training data (e.g., number of object/scene classes) increases, especially when the manifold of the multi-class distribution of images drawn from the ground truth distribution is not continuous. \ow{um... I don't really get this previous sentence}
 
 We propose a solution to generate multi-class images using a form of class conditioning that outperforms prior class conditioned GANs while requiring significantly fewer parameters than using a single GAN per-class. 
 To do this, we take advantage of the fact that different classes will share similar visual features, and propose an architecture that learns to pick a subset of parameters to use for each class.
-Our method leverages a fully-residual GAN architecture, both in the generator and discriminator. 
-The fully residual nature allows a second, ``gating'' network to determine which set of generator and discriminator blocks to use conditioned on the input class. \ow{explanation gets harder if ``our'' method is channel-wise}
+Our method leverages a fully-residual GAN architecture, both in the generator and discriminator.
+This is combined with a second, ``gating'' network to determine which set of generator and discriminator blocks to use conditioned on the input class. \ow{explanation gets harder if ``our'' method is channel-wise}
 
 This gating network serves to perform a form of class conditioning, and we compare the effect of it to a number of other forms of conditioning, such as for example concatenating one-hot class information, auxillary classification, \todo{...}.
 \ow{describe high level idea and outcome of the 1d experiments}
