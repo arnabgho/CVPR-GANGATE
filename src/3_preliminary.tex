@@ -12,8 +12,7 @@ Instead of fully removing residual blocks, we evaluate a number of soft-gating m
 %with a whereby a hypernetwork gets the condition modulates the feature activations of the residual blocks i.e. the output of the standard residual block was modified from $x+f(x)$ to  $x+\alpha . f(x)$ where the set of alphas for each of the residual block is predicted by the hypernetwork. 
 
 
-
-\paragraph{Relationshp to conditioning}
+\paragraph{Relationship to conditioning}
 This approach can be seen as form of conditioning. 
 Conditioning by concatenation is a weak form of conditioning because by information theoretic principles, the deeper the network the lesser mutual information is preserved between the conditioning input and the output of the network. To mitigate this issue some other solutions such as the projection discriminator \cite{miyato2018cgans} have been proposed and our residual gate selection block on the discriminator is along similar lines. 
 
