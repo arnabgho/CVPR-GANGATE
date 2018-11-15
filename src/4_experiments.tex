@@ -41,6 +41,15 @@ The incision experiments as performed by \cite{veit2016residual} showed that dee
 
 \paragraph{Encoder-Decoder} As a baseline, we test the encoder-decoder architecture from MUNIT~\cite{huang2018multimodal} which consists of an encoder followed by a set of residual blocks with a decoder at the end. 
 
+\begin{figure}%[ht!]
+    \centering
+    \addSubFigHalf{gated_G_act}{Activations of the gated residual blocks in the generator}{fig:gen_act} 
+    \addSubFigHalf{gated_D_act}{Activations of the gated residual blocks in the discriminator}{fig:dis_act} 
+    \caption{Activation of the various blocks in the Generator and Discriminator}
+    \label{fig:mnist_act}
+    \vspace{-3mm}
+\end{figure}
+
 
 \begin{figure*}[h]
     \centering
@@ -117,9 +126,6 @@ Random Real Images & $0.3665 \pm 0.0053$ \\
     \vspace{-4mm}
 \end{figure}
 
-\subsection{Multi-Task Generations: }
-Since our network is robust enough to be able to generate images conditioned on class and modulation of which blocks to use, it can further be used to generate images which are different in tasks such as the same network could do both day2night and instance maps to realistic generations of street scenes. As we can see in \figref{fig:multi-task_cityscapes} our model (Gated,Channel) is able to perform both tasks while the other techniques focus on only 1 of them more. In case of MUNIT like architecture conditioned on all layers the discriminator became too powerful after a while and the training progressed with only the L1 loss which caused the blurry generations in the case of segmentation maps to real image synthesis as evident from the figure.
-
 
 \begin{figure*}%[ht!]
 \centering
@@ -184,6 +190,11 @@ MUNIT like arch , 1-hot conditioning all layers & 60 \% & 0.16 & 0.15 \\
 \end{tabular}
 \label{table:1d_G} % is used to refer this table in the text
 \end{table}
+
+\subsection{Multi-Task Generations: }
+Since our network is robust enough to be able to generate images conditioned on class and modulation of which blocks to use, it can further be used to generate images which are different in tasks such as the same network could do both day2night and instance maps to realistic generations of street scenes. As we can see in \figref{fig:multi-task_cityscapes} our model (Gated,Channel) is able to perform both tasks while the other techniques focus on only 1 of them more. In case of MUNIT like architecture conditioned on all layers the discriminator became too powerful after a while and the training progressed with only the L1 loss which caused the blurry generations in the case of segmentation maps to real image synthesis as evident from the figure.
+
+
 
 % \section{Planned Set of Experiments:}
 % \subsection{Unconditional Generations :}
