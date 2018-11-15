@@ -14,7 +14,7 @@ We explore and analyze different types of gating, including a {\em blockwise} an
 %
 
 We further introduce a new task of generating multi-class images from rough outline scribbles where gating is particularly useful due to class ambiguities in the mapping. Fig.~\ref{fig:teaser} (top left) shows one such example where the same simple scribble yields different outputs of a generator conditioned on ten different classes.
-In the case of the InfoGAN~\cite{chen2016infogan} setting, which was previously shown to produce limited texture variation~\cite{ghosh2017multi} with na\"ive concatenation-based conditioning, our method produces diverse generations, as shown in Fig.~\ref{fig:teaser} (top right).
+In the case of the InfoGAN~\cite{chen2016infogan} setting, which was previously shown to produce limited texture variation~\cite{ghosh2017multi} with naive concatenation-based conditioning, our method produces diverse generations, as shown in Fig.~\ref{fig:teaser} (top right).
 In addition, we also introduce the {\em multi-task image-to-image translation}. In its original setting \cite{isola2016image2image}, different trained models had to be introduced for the different translation tasks. Our gating mechanism enables good performance on each task by activating appropriate task-specific blocks and channels (Fig.~\ref{fig:teaser} bottom).
 
 %whereby the rough scribbles divulge almost no information about the class.
@@ -43,7 +43,7 @@ In addition, we also introduce the {\em multi-task image-to-image translation}. 
 In summary, our contributions are:
 \begin{itemize}
 \item An in-depth analysis of the role of gating networks in generative modeling.
-\item A novel architecture using a gating hypernetwork that can generate diverse multi-class results for both class conditioned and InfoGAN-style applications. \ow{maybe fix infogan with description}
+\item A novel architecture using a gating hypernetwork that can generate diverse multi-class results both when classes are known a-priori, or are derived from the data in an unsupervised fashion (similar to InfoGAN~\cite{chen2016infogan}).
 %\item Incision experiments on a trained Residual Generator based GAN on the 1D Mixture of Gaussians to show certain blocks correspond to certain modes in the generated distribution.
 %\item Introduction of the Gated Residual Blocks and the Hypernetwork to predict the corresponding alphas on the Generator and Discriminator.
 \item Introduction of a new image-to-image translation task of generating realistic images from very rough outline scribbles.
