@@ -1,8 +1,8 @@
 \begin{abstract}
 We propose a method that allows us to generate images belonging to multiple domains using a single network. 
-Our approach is based on a GAN framework with two separate branches, a fully residual network, and a separate smaller gating network conditioned on the input class that selects residual blocks from the first branch.
-The same gating network also conditions the residual blocks of the discriminator network.
-We show that such an approach is able to produce high quality multi-class image generation, both in an image-to-image translation task, as well as a random-noise-to-image generation task. 
+Our approach is based on a GAN framework with two separate branches, a fully residual generator and discriminator, and a separate smaller gating network.
+The gating network selects residual blocks from the generator and discriminator based on some conditioning. 
+We show that such an approach is able to produce high quality multi-class image generation, both in an class-conditioned image-to-image translation task, as well as in an unsupervised image generation task where diversity is learned.
 This method allows for significantly smaller model sizes than previous multi-class approaches by taking advantage of similarities across classes. 
 We analyze our gating network to show that it leads to subnetworks based on the residual blocks that are active for a particular class.
 %This approach as well as helps inject low dimensional information into a network more effectively than just concatenating channel-wise after replication to match the image dimension. 

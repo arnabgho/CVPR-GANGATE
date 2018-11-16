@@ -8,6 +8,10 @@
 \usepackage{amssymb}
 \usepackage{dsfont}
 \usepackage{enumitem}
+\usepackage{multicol}
+\usepackage{multirow}
+% \usepackage{booktabs}
+\usepackage{array, caption, floatrow, tabularx, makecell, booktabs}%
 
 %%%%%%%%%%%%%%
 % Packages and stuff custom
@@ -18,6 +22,7 @@
 \usepackage{subcaption}
 \captionsetup{compatibility=false}
 \usepackage{booktabs}
+\usepackage{arydshln}
 %\usepackage{hyperref}
 % If you comment hyperref and then uncomment it, you should delete
 % egpaper.aux before re-running latex.  (Or just hit 'q' on the first latex
@@ -135,7 +140,7 @@ Adobe Research\\
     \centering
     % \includegraphics[width=.9\linewidth,height=4.5cm]{images/teaser/sketch.jpg}
     \includegraphics[width=1.\linewidth]{paper_images/fig1.pdf}
-    \captionof{figure}{Our proposed GAN-gate method enables conditioning on a variety of conditional image-to-image translation tasks, such as {\bf (top-left)} outline-to-image translation, conditioned on object class {\bf (top-right)} multimodal edge map-to-handbag translation, conditioned on a learned latent code, and {\bf (bottom)} disjoint multitask image-to-image translation. Each of the three examples uses a single generator and discriminator.\label{fig:teaser}}
+    \captionof{figure}{Our proposed GAN-gate method enables a variety of challenging image-to-image translation tasks, such as {\bf (top-left)} multiclass outline-to-image translation, conditioned on object class {\bf (top-right)} multimodal edge map-to-handbag translation, conditioned on a learned latent code, and {\bf (bottom)} disjoint multitask image-to-image translation. Each of the three examples uses a single generator and discriminator.\label{fig:teaser}}
 \end{center}%
 }]
     

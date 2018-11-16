@@ -1,7 +1,7 @@
 
 \section{Experiments}
 
-\noindent To explore the effectiveness of our soft-gating residual network for image generation tasks, we test on a variety of settings:
+\noindent To explore the effectiveness of our soft-gating residual network, we test on a variety of settings.
 
 % \section{Experiments}
 % We present the details of a set of experiments performed and the corresponding results of the experiments which show the efficacy of our Gated Residual Blocks albeit being simple to implement.
@@ -28,21 +28,9 @@
 %     \vspace{-3mm}
 % \end{figure}
 
-We first evaluate the effect of a gating network in the simple toy scenario where the data distribution is a 1D mixture of Gaussians comprising of 5 components.
-We train a simple Generator and Discriminator architecture each consisting of only residual blocks where each residual block is composed of fully connected layers in place of 2D convolutions.
-In this setting, we analyze the effect of removing different blocks after network training, in the vein of \cite{veit2016residual}.
-We observe in Figure ~\ref{fig:onedexperiment}, when some residual blocks were disabled (and only the skip connection of that block was activated), it led to the disappearance of particular modes from the data distribution. 
-Removal of groups of blocks led to the disappearance of clusters of modes from the generated distribution. 
-This experiment shows that the analysis performed in the case of classification \cite{veit2016residual} also holds true in the case of generative models.
-
+We first evaluate the effect of a gating network in the simple scenario of modeling a one dimensional mixture of Gaussians, comprised of five components. For this test, the generator and discriminator architectures consist of only residual blocks, where each residual block is composed of fully connected layers. Additional details are in the supplementary material. The generator is conditioned on a latent vector $z$. The generator is able to approximate the distribution, as seen in Fig.~\ref{fig:onedexperiment} (left). Removing a single residual block, in the spirit of~\cite{veit2016residual}, leads to the disappearance of a mode from the predicted distribution. Removal of another block leads to further removal of another mode, as seen in Fig.~\ref{fig:onedexperiment}  (mid, right). This experiment shows an encouraging result, suggesting that residual blocks decompose naturally into modeling parts of a distribution.
 
 % \paragraph{Incision Experiments} similar to \cite{veit2016residual} on the generator after the network is trained. More specifically, if a layer (say $i^{th}$) had to be skipped, we disable the $f_i(x)$ of the ith residual block and now the output of the $i^{th}$ residual block is $x$ in place of the usual $x+f_i(x)$ encountered during training. Some interesting observations could be made, for example removing some blocks corresponded to the vanishing of certain modes from the generated distribution once the incision was performed on the generator network. Another surprising observation was that the same mode vanished on the incision of certain different residual blocks. This experiment validated the hypothesis of \cite{veit2016residual} that residual networks behave like an ensemble of several shallower networks and also pointed out that another network could predict based on the condition which blocks to use and to skip other non-necessary blocks in the network for that particular condition.
-
-
-\subsection{Our architecture (Skinny ResNet)}
-Our network design was based on the principle that deeper networks have more valid disjoint partially shared paths but to help the ease of learning for the gating mechanism we had similar number of channels for each residual block including the residual blocks used for upsampling and downsampling. All of the blocks incuding the upsampling and downsampling residual blocks were gated as the quality of generations improved with the gating applied to all layers. Details about the architecture can be found in the supplementary.
-
-The gate prediction network was also designed using residual blocks with each residual block consisting of 1D convolution layers. 
 
 % \begin{figure}[t]
 %     \centering
@@ -51,18 +39,44 @@ The gate prediction network was also designed using residual blocks with each re
 %     % \vspace{-4mm}
 % \end{figure}
 
+\begin{figure*}[t]%[ht!]
+    \centering
+    % \addSubFigHalf{gated_G_act}{Generator}{fig:gen_act} \addSubFigHalf{gated_D_act}{Discriminator}{fig:dis_act} 
+    % \caption{Activation of the various blocks in the Generator and Discriminator}
+    \includegraphics[width=\linewidth,trim={.7cm 0 .8cm 0},clip]{paper_images/alpha_hist.pdf}\caption{ {\bf Distribution of gating parameters.} We show the distribution of learned gating parameter $\alpha$ for {\bf (left)} blockwise and {\bf (right)} channelwise soft-gating. Values closer to 0,1 indicate that a residual block or channel is completely turned ``off" or ``on". In our best performing system, channelwise gating, the values are soft, but tend to be closer to the extremes.}
+    \label{fig:alpha_dist}
+    \vspace{-3mm}
+\end{figure*}
+
 % \paragraph{Network Architecture}
 % \rz{shorten this into a few sentences for each net, so reader knows what we tested later, and point to suppmat where the tables can go}
 
-\subsection{Outline $\rightarrow$ Image}
-We introduce a new challenging dataset to test multi-class generation. 
-We collected a dataset of 10 classes with 150 images each from each class, and obtained scribbles for each image using Adobe Photoshop's tool for outlining objects.
-The classes collected were basketball,chicken,cookie,cupcake,moon,orange,soccer,strawberry, watermelon, pineapple. 
-We further collected a test set consisting of 50 images for each class. 
+% \subsection{Outline$\rightarrow$Image}
+\subsection{Class-conditional image translation}
 
+\noindent We further investigate the effect of soft-gating in image modeling scenarios. We first describe our dataset, which contains sparse inputs and is focused on multiclass generation. 
 
-Unlike previous work on scribble to image translation \cite{isola2016image2image,zhu2017unpaired,wang2017high} , these outlines contain significantly less edge information. This makes the multi-task generation problem more challenging, as the internal features must be learned by the network, and the same outline can generate substantially different images conditioned on the class. 
+\noindent {\bf Dataset} Previous work~\cite{isola2016image2image,sangkloy2017scribbler,zhu2017unpaired,wang2017high} has trained edge-to-image translation. These systems have been post-hoc repurposed into a sketch-to-image translation machine, sometimes gaining unexpected popularity\footnote{Edges to cats demo: https://affinelayer.com/pixsrv/}. We collect 200 images (150 train, 50 test) for each of 10 classes -- basketball, chicken, cookie, cupcake, moon, orange, soccer, strawberry,  watermelon and pineapple -- and obtain rough outlines for each image. %using Adobe Photoshop
+% Unlike previous work on scribble-to-image translation \cite{isola2016image2image,zhu2017unpaired,wang2017high},
+Our outlines contain significantly less edge information. This makes the multitask generation problem more challenging -- for example, the same circular outline can draw a basketball, soccerball, or watermelon. A network must effectively integrate class information to be successful in this setting.
+% , as the internal features must be learned by the network, and the same outline can generate substantially different images conditioned on different classes.
+% , as seen in Fig.~\ref{fig:teaser}.
 %The task involves multiple different objects of high realism when the input is very similar for the various classes several of them being exactly same(in the case of circular objects where the input scribble is an identical scribble for all circular classes). 
+
+\noindent {\bf Network Architecture} Our preliminary experiments, using the architecture based on MUNIT~\cite{huang2018multimodal} did not succeed for this task. The architecture, which we refer to as {\bf Encoder-Decoder}, is comprised of 3 \texttt{conv} layers, 8 residual blocks, and 3 \texttt{up-conv} layers. The residual blocks have \rz{XXX} channels. We deepen the network, based on the principle that deeper networks have more valid disjoint, partially shared, paths~\cite{veit2016residual}, and add 26 residual blocks. To enable the larger number of residual blocks, we reduce the channels to 32 for every layer. Additionally, modifying the downsampling and upsampling blocks to be residual improved results, and also enables us to apply gating to {\em all} blocks. % , including the upsampling and downsampling residual blocks, improves the quality of generations. Additionally, we discover that even having few blocks  Details about the architecture can be found in the supplementary. \eli{explain why skinny.}
+When gating is used, the gate prediction network, $\mathcal{F}$ in Fig.~\ref{fig:arch-gate} (mid-right, right) is also designed using residual blocks. We refer to this network as \textbf{SkinnyResNet}. Additional architectue details are in the supplementary material. 
+We systematically test methods for injecting class information, as described in Sec.~\ref{sec:methods}. \begin{itemize}[noitemsep]
+\item{\bf Per-class}: a single generator for each category; this is the only test setting with \textit{multiple} networks, all others train a single network
+\item{\bf Concat (In)}: naive concatenation, input layer only
+\item{\bf Concat (All)}: naive concatenation, all layers
+\item{\bf Concat (In)+Aux-Class}: we add an auxiliary classifier, both for input-only and all layers settings
+\item{\bf BlockGate(+Bias), BlockGate}: block-wise soft-gating, with and without a bias parameter
+\item{\bf AdaIn}: Adaptive instance normalization
+\item{\bf ChannelGate(+Bias), ChannelGate}: channel-wise soft-gating, with and without a bias parameter
+\end{itemize}
+
+
+% with each residual block consisting of 1D convolution layers. 
 
 \begin{figure*}[h]
     \centering
@@ -75,36 +89,108 @@ Unlike previous work on scribble to image translation \cite{isola2016image2image
 % The incision experiments as performed by \cite{veit2016residual} showed that deeper networks have more  valid paths of computation. Our incision experiments on the 1D Mixture of Gaussians setting also demonstrated the effectiveness of having deeper residual networks with lesser number of neurons in each block. We therefore design a network architecture which doesn't change the number of channels even in the case where the spatial resolution changes since the gating is applied to all the blocks including the downsampling and upsampling residual blocks and the hypothesis is that the gating mechanism would work best if all the blocks had similar number of modulations per block.
 
 
-\paragraph{Evaluation}
-To judge the generation quality, we perform a perceptual evaluation using Amazon Mechanical Turk, where users were shown a generated image and asked to judge how real it is.
-We also tested the purity of the generations i.e. whether the class conditioning accurately guides the model to generate images from the right class by using a pretrained InceptionvV3 network finetuned on our dataset. 
-The class specific generations from the test set were passed through the finetuned network and the classifications were used to judge the class specific purity of the generations.
-\ow{purity is the right word? sounds weird}
+\noindent \textbf{Evaluation Metrics} We evaluate the results on two important axes: adherence to conditioning and realism.
 
-As we can see from the generations \figref{fig:alg_comp}, all of the various gating mechanisms and the baselines are able to generate images of high quality and realism from some classes but most of the baselines also fail in some classes, often confusing visual features from the wrong class. 
+We first test the adherence to the conditioning -- whether the network generates an image of the correct class. Off-the-shelf networks have been previously used to evaluate colorizations~\cite{zhang2016colorful}, street scenes~\cite{isola2016image2image, wang2017high}, and ImageNet generations~\cite{salimans2016improved}. We take a similar approach and fine-tune a pretrained InceptionV3 network~\cite{szegedy2016rethinking} for our 10 classes. The generations are then tested with this network for classification accuracy.
+% The class specific generations from the testset were passed through the finetuned network and the classifications were used to judge the class specific purity of the generations.
 
-The gating mechanism on the other hand, does not exhibit these same problems. 
-Among the gating mechanisms, we found that channel-wise multiplication (on both generator and discriminator) has the best realism which is also corroborated by the Amazon Mechanical Turk Experiments and the classification accuracy of an Inception network finetuned on our dataset demonstrates the purity of the generations corresponding to the correct class using the gating mechanism.  
-\paragraph{Does Naive concatenation work?} As evident from \figref{fig:alg_comp} for some classes naive concatenation helps in generating appealing images but for some classes it either fails to generate images from the right class or generates unrealistic images from that class.
+To judge the generation quality, we perform a ``Visual Turing test" using using Amazon Mechanical Turk (AMT). Turkers are shown a real image, followed by a generated image (or vice versa), and asked to identify the fake. An algorithm which generates a realistic image will ``fool" Turkers into choosing the the incorrect image. We use the implementation from~\cite{zhang2016colorful}. We show quantitative results in Fig.~\ref{fig:acc_vs_real} and qualitative examples in Fig.~\ref{fig:alg_comp}.
+
+\paragraph{Does naive concatenation effectively inject conditioning?} In Fig.~\ref{fig:alg_comp}, we show a selected example from each of the 10 classes. The per-class baseline trivially adheres to the conditioning, as each class gets to have its own network. However, when a single network is trained to generate all classes, naive concatenation is unable to successfully inject class information, for either network and for either type of concatenation. For the \textbf{EncoderDecoder} network, basketballs, oranges, cupcakes, pineapples, and fried chicken are all confused with each other. For the \textbf{SkinnyResNet} network, oranges are generated instead of basketballs, and pineapples and fried chicken drumsticks are confused. As seen in Fig.~\ref{fig:acc_vs_real}, classification accuracy is slightly higher when concatenating all layers versus only the input layer, but is low for both ($62.6\%$ and $64.5\%$).
+% As evident from \figref{fig:alg_comp} for some classes naive concatenation helps in generating appealing images but for some classes it either fails to generate images from the right class or generates unrealistic images from that class.
 % No, point to Figure 9 (qualitative grid) \& Figure 10 (the plot)
 
 % \paragraph{Does gating produce accurate and realistic conditional generations?} The gating mechanisms succeeds in generating realistic images from each class while also preserving the class conditioning appropriately. As evident from the comparisons of generations in \figref{fig:alg_comp} and the metrics reported in \figref{fig:conditioning_amt} the channel wise multiplication produces the most visually appealing results amongst the various gating mechanisms.
 % Yes, point to Figure 9 results. Also analyze which variation is the best
 
-\paragraph{Does gating work across architectures?} 
-We evaluate the following architectures on this task: 
-We first evaluate our \todo{SkinnyResNet} with a more traditional encoder-decoder architecture. 
-We use the architecture proposed in MUNIT~\cite{huang2018multimodal} which consists of an encoder followed by a set of residual blocks with a decoder at the end.
-In this case, we apply the gating to this architecture only on the bottleneck residual blocks.
-As evident from \figref{fig:alg_comp} although the network learns to disentangle the various classes, the generation quality reduces from the skinny resnet architecture where all the layers are gated.
+\paragraph{Does gating effectively inject conditioning?} Using the proposed soft-gating, on the other hand, leads to succesful generations. We test variants of soft-gating on the \textbf{SkinnyResNet}, and accuracy is dramatically improved, between $89.6\%$ to $99.6\%$. Among the gating mechanisms, we find that channel-wise multiplication
+% (on both generator and discriminator)
+generates the most realistic images, and achieves an AMT fooling rate of $23.4\%$. Interestingly, the fooling rate is higher than the per-class generator of $17.7\%$. Qualitatively, we notice that per-class generators sometimes exhibits artifacts in the background, as seen in the generation of "moon". We hypothesize that the single generator with gating has the benefit of seeing more training data and finding common elements across those classes, such as clean, white backgrounds.
+% The classification accuracy of an Inception network finetuned on our dataset demonstrates the purity of the generations corresponding to the correct class using the gating mechanism. 
+
+% As seen in \figref{fig:alg_comp}, all of the various gating mechanisms and the baselines are able to generate images of high quality and realism from some classes but most of the baselines fail in some classes, often mixing visual features from wrong classes. 
+
+
+\begin{figure*}[h]
+    \centering
+    \includegraphics[width=1.\linewidth]{paper_images/multitask_comp.pdf}
+    \caption{\textbf{Multitask generation results}. Single network trained on both Cityscapes Label$\rightarrow$Image and Day$\rightarrow$night. The proposed channelwise gating method (right) is able to better incorporate task conditioning and produces more realistic results.
+    % \ow{seems like this is missing 1. two generators, and 2. one generator. instead it seems more like an ablation study on our method, which is not the point. would be more impressive to show it matches 2 generators and 1 generator totally fails.}
+    }
+    \label{fig:multi-task_day2night}
+    \vspace{-2mm}
+\end{figure*}
+
+\begin{table*}[t]
+  \floatsetup{floatrowsep=qquad, captionskip=4pt}
+  \centering
+    \begin{floatrow}[2]
+    \ffigbox[\FBwidth]{
+    \scalebox{0.95} {
+        \begin{tabular}{l c}
+        % \hline
+        \toprule
+        \textbf{Model} & \textbf{LPIPS Distance} \\ \midrule
+        Random Real Images & $0.3665 \pm 0.0053$ \\ \midrule
+        BicycleGAN~\cite{zhu2017toward} & $0.1374 \pm 0.0005$  \\ \midrule
+        Concat(In) &  $0.0432 \pm 0.0002$ \\
+        Concat(All) & $0.0159 \pm 0.0004$ \\ \cdashline{1-2}
+        ChannelGate [Ours] & $0.0964 \pm 0.0003$  \\
+        \bottomrule %inserts single line
+        \end{tabular}}}
+        {\caption{\label{table:infogan_lpips} {\bf Edges$\rightarrow$Handbags Diversity} We measure LPIPSv0.1~\cite{zhang2018unreasonable} distance between randomly generated handbags, given the same edge map, as proposed in~\cite{zhu2016generative}. Given the same architecture, gating achieves higher diversity than concatenation.}}
+        \ffigbox[\FBwidth]{
+        \scalebox{0.95} {
+        \begin{tabular}{l c c c} % 
+        % \begin{tabular}{p{6cm}c{1.8cm}c{1.8cm}c{1.8cm}} % centered columns (4 columns)
+        \toprule
+        \multirow{2}{*}{\textbf{Model}} & \textbf{Per-pixel} &  \textbf{Per-class } & \textbf{Class} \\
+        & \textbf{Acc} &  \textbf{Acc} & \textbf{IOU} \\ \midrule
+        Pix2pix \cite{isola2016image2image} & 0.660  & 0.23 & 0.17 \\ \midrule
+        EncDec, Concat(All) & 0.600 & 0.16 & 0.15 \\ \cdashline{1-4}
+        SkinnyResNet, Cat(All) & 0.602 & 0.18 & 0.16 \\
+        SkinnyResNet, Cat(All)+Aux-Class & 0.675 & 0.20 & 0.16 \\ \cdashline{1-4}
+        SkinnyResNet, ChannelGate [Ours] & 0.684 & 0.23 & 0.18 \\ \bottomrule
+        % \bottomrule %inserts single line
+        \end{tabular}}}{
+        \caption{ {\bf Cityscapes generation accuracy}. We evaluate the accuracy of Cityscapes Label$\rightarrow$Image generation results, as part of the multitask test. The network is also trained for an unrelated Day$\rightarrow$Night task. A pre-trained segmentation network~\cite{XX} evaluates the synthesized results. Gating achieves higher results than concatenation, as well as single-task pix2pix~\cite{isola2016image2image}.}
+        \label{label:me}}
+    
+  \end{floatrow}
+%  \vspace{-2mm}
+%   \label{fig:real_vs_div}
+\end{table*}
+
+
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=\linewidth]{conditioning_amt.png}
+%     \caption{AMT studies of the various gating techniques on the scribble dataset}\label{fig:conditioning_amt}
+%     \vspace{-4mm}
+% \end{figure}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\linewidth]{infogan.jpg}
+    \caption{{\bf Edges$\rightarrow$Handbags qualitative examples.} Naive Conditioning of InfoGAN fails (left) while gating (right) succeeds in producing diverse generations.}\label{fig:infogan_gate}
+    \vspace{-2mm}
+\end{figure}
+
+\noindent \textbf{Is gating effective across architectures?} 
+% We evaluate the following architectures on the outlines-to-images task. 
+% We first evaluate our \todo{SkinnyResNet} with a more traditional encoder-decoder architecture. 
+% We use the architecture proposed in MUNIT~\cite{huang2018multimodal} which consists of an encoder followed by a set of residual blocks with a decoder at the end.
+As seen in Fig.~\ref{fig:acc_vs_real}, using channelwise gating instead of naive concatenation improves performance both accuracy and realism \textit{across} architectures. For example, for the \textbf{EncoderDecoder} architecture, gating enables successful generation of the pineapple.
+% In this case, we apply the gating to this architecture only on the bottleneck residual blocks.
+% As evident from \figref{fig:alg_comp} although the network learns to disentangle the various classes, the generation quality reduces from the skinny resnet architecture where all the layers are gated.
+Both quantitatively and qualitatively, results are better for our proposed \textbf{SkinnyResNet} architecture.
 
 % Yes, works for both skinny resnet \& enc-dec.
 
-\paragraph{Do the generations generalize to unusual outlines?} The training images consisted of the outlines corresponding to the accurate geometry for each class but the technique generalized to shapes it had never encountered during training. As evident from \figref{fig:teaser} in cases of strawberry, pineapple ,cupcake and fried chicken the network is able to generate realistic textures even when the conditioning input is in the form of a circle.
-% Yes, point to circular pineapple in Figure 1
+\paragraph{Do the generations generalize to unusual outlines?} The training images consist of the outlines corresponding to the accurate geometry for each class. However, an interesting test scenario is whether the technique generalizes to unseen shape and class combinations. In \figref{fig:teaser}, we show that an input circle and not only produce circular objects, such as a basketball, watermelon, and cookie, but also noncircular objects such as strawberry, pineapple, and cupcake. Note that both the pineapple crown and bottom are generated, even without any structural indication of these parts in the outline.
 
-\paragraph{How are the gating coefficients distributed?}
-An interesting observation of the gating coefficients in the case of the block wise gating mechanism, as demonstrated in \figref{fig:gated_block_act} for different classes different sets of blocks were activated and some blocks were totally deactivated for some classes. The switching on and off of various blocks without even adding a sparsity constraint was better defined in the case of the discriminator.
+\paragraph{How are the gating coefficients distributed?} In Fig.~\ref{fig:alpha_dist}, we show the distribution of predicted gating parameters, for both blockwise and channelwise gating. The parameters tend to be closer to 0, for ``off" and 1, for ``on". For blockwise gating, the discriminator is almost completely binary. For channelwise gating, the discriminator tends slightly more to the extremes than the generator.
+% An interesting observation of the gating coefficients in the case of the block wise gating mechanism, as demonstrated in \figref{fig:gated_block_act} for different classes different sets of blocks were activated and some blocks were totally deactivated for some classes. The switching on and off of various blocks without even adding a sparsity constraint was better defined in the case of the discriminator.
 
 
 % \begin{figure*}[h]
@@ -132,125 +218,111 @@ An interesting observation of the gating coefficients in the case of the block w
 % \subsection{Comparison to other forms of conditioning in Resblock :}
 % Conditional Batch Normalization, FiLM and Adaptive Instance Normalization are the techniques which are the most closely related to our methodology. All of these have the benefit of being applicable even without the presence of residual blocks in the architecture. So an exhaustive comparison with all of these methods along with our form of conditioning on the residual blocks is a valid set of experimentation and has to be done to make the paper complete.
 
-% \begin{figure}
-%     \centering
-%     \includegraphics[width=\linewidth]{conditioning_amt.png}
-%     \caption{AMT studies of the various gating techniques on the scribble dataset}\label{fig:conditioning_amt}
-%     \vspace{-4mm}
-% \end{figure}
-
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=\linewidth]{infogan.jpg}
-    \caption{Naive Conditioning of infogan fails(left) while gating (right) succeeds in producing diverse generations}\label{fig:infogan_gate}
-    \vspace{-4mm}
-\end{figure}
-
 % \subsection{Infogan Variations(pix2pix):}
 \subsection{Edges $\rightarrow$ Handbags (Multimodal Generations)}
 Inter-class variation, also called diversity, is a significant challenge in GAN image generation applications. 
-In the pix2pix setting as shown by previous works \cite{ghosh2017multi} and \cite{zhu2017toward} even the InfoGAN (cLR in \cite{zhu2017toward}) setup wasn't able to produce meaningful variations in the generations, or needed multiple generators or cyclical losses to produce meaningful variations in the generated images. 
+In the pix2pix setting, as shown by previous works \cite{ghosh2017multi} and \cite{zhu2017toward} even the InfoGAN (cLR in \cite{zhu2017toward}) setup was not able to produce meaningful variations in the generations, or needed multiple generators or cyclical losses to produce meaningful variations in the generated images. 
 With our gating mechanism, we show that we can create meaningful variations in the generated samples conditioned on a single sketch as evident from the generations \figref{fig:infogan_gate} and from the LPIPS metric \cite{zhang2018unreasonable} in  Table. \ref{table:infogan_lpips} which measures the diversity among the generations in the feature space of a standard Imagenet classifier.
 \ow{needs more detail}
 
-\begin{table}[ht]
-\caption{Evaluation on Edges to Handbags diverse generations. Diversity using LPIPS metric \cite{zhang2018unreasonable}} % title of Table
-\small
-\centering % used for centering table
-% \begin{tabular}{|c|c|c|c|} % centered columns (4 columns)
-\begin{tabular}{p{3cm}p{3cm}} % centered columns (4 columns)
-% \hline
-\toprule
-\textbf{Model} & \textbf{LPIPS Distance} \\%heading
-\midrule
-BicycleGAN \cite{zhu2017toward} & $0.1374 \pm 0.0005$  \\ % inserting body of the table
-\midrule
-Ours(Gated) & $0.0964 \pm 0.0003$  \\
-\midrule
-Concat(Input) &  $0.0432 \pm 0.0002$ \\
-\midrule
-Concat(All Layers) & $0.0159 \pm 0.0004$ \\
-\midrule
-Random Real Images & $0.3665 \pm 0.0053$ \\
-\bottomrule %inserts single line
-\end{tabular}
-\label{table:infogan_lpips} % is used to refer this table in the text
-\end{table}
 
 
 
+% \begin{table}[ht]
+% \caption{Evaluation on Edges to Handbags diverse generations. Diversity using LPIPS metric \cite{zhang2018unreasonable}} % title of Table
+% \small
+% \centering % used for centering table
+% % \begin{tabular}{|c|c|c|c|} % centered columns (4 columns)
+% \begin{tabular}{p{3cm}p{3cm}} % centered columns (4 columns)
+% % \hline
+% \toprule
+% \textbf{Model} & \textbf{LPIPS Distance} \\%heading
+% \midrule
+% BicycleGAN \cite{zhu2017toward} & $0.1374 \pm 0.0005$  \\ % inserting body of the table
+% \midrule
+% Ours(Gated) & $0.0964 \pm 0.0003$  \\
+% \midrule
+% Concat(Input) &  $0.0432 \pm 0.0002$ \\
+% \midrule
+% Concat(All Layers) & $0.0159 \pm 0.0004$ \\
+% \midrule
+% Random Real Images & $0.3665 \pm 0.0053$ \\
+% \bottomrule %inserts single line
+% \end{tabular}
+% \label{table:infogan_lpips} % is used to refer this table in the text
+% \end{table}
 
-
-\begin{figure}[t]%[ht!]
-\centering
-\begin{tabular}{*{5}{c@{\hspace{3px}}}}
-    \includegraphics[width=.18\linewidth]{channel_gated/cityscapes_95_real_A} &
-    \includegraphics[width=.18\linewidth]{channel_gated/cityscapes_95_fake_B} &
-    \includegraphics[width=.18\linewidth]{munit_baseline_all/cityscapes_95_fake_B} &
-    \includegraphics[width=.18\linewidth]{our_baseline_all/cityscapes_95_fake_B} & 
-    \includegraphics[width=.18\linewidth]{acgan_baseline_all/cityscapes_95_fake_B} \\
+% \begin{figure*}[t]%[ht!]
+% \centering
+% \begin{tabular}{*{5}{c@{\hspace{3px}}}}
+%     \includegraphics[width=.18\linewidth]{channel_gated/cityscapes_95_real_A} &
+%     \includegraphics[width=.18\linewidth]{munit_baseline_all/cityscapes_95_fake_B} &
+%     \includegraphics[width=.18\linewidth]{our_baseline_all/cityscapes_95_fake_B} & 
+%     \includegraphics[width=.18\linewidth]{acgan_baseline_all/cityscapes_95_fake_B}&
+%     \includegraphics[width=.18\linewidth]{channel_gated/cityscapes_95_fake_B} \\
     
-    \includegraphics[width=.18\linewidth]{channel_gated/night2day_58_5018_to_5000_real_A} &
-    \includegraphics[width=.18\linewidth]{channel_gated/night2day_58_5018_to_5000_fake_B} &
-    \includegraphics[width=.18\linewidth]{munit_baseline_all/night2day_58_5018_to_5000_fake_B} &
-    \includegraphics[width=.18\linewidth]{our_baseline_all/night2day_58_5018_to_5000_fake_B} &
-    \includegraphics[width=.18\linewidth]{acgan_baseline_all/night2day_58_5018_to_5000_fake_B} \\
-    \begin{subfigure}[t]{.18\linewidth}\caption{\small Input}\label{fig:daynightinput}\end{subfigure} &
-    \begin{subfigure}[t]{.18\linewidth}\caption{\small Ours}\label{fig:daynightinput}\end{subfigure} &
-    \begin{subfigure}[t]{.18\linewidth}\caption{\small Enc-Dec Concat (All)}\label{fig:daynightinput}\end{subfigure} &
-    \begin{subfigure}[t]{.18\linewidth}\caption{\small Concat (All)}\label{fig:daynightinput}\end{subfigure} &
-    \begin{subfigure}[t]{.18\linewidth}\caption{\small Concat(All)+Aux-Class}\label{fig:daynightinput}\end{subfigure}\\
-\end{tabular}
-    % \addSubFigEighth{channel_gated/cityscapes_95_real_A}{input}{fig:city_input} 
-    % \addSubFigEighth{channel_gated/cityscapes_95_fake_B}{Ours}{fig:city_ours} 
-    % \addSubFigEighth{munit_baseline_all/cityscapes_95_fake_B}{MUNIT Conditioning all layers}{fig:city_munit}
-    % \addSubFigEighth{our_baseline_all/cityscapes_95_fake_B}{Our Architecture Conditioning all layers}{fig:bag_3}
-    % \addSubFigEighth{acgan_baseline_all/cityscapes_95_fake_B}{ACAN (our Architecture Conditioning all layers) }{fig:bag_3}
-    % \caption{Various Methods for Cityscapes for Multi-Task Experiment}
-    % \label{fig:multi-task_cityscapes}
-    % \vspace{-3mm}
-    % \addSubFigEighth{channel_gated/night2day_58_5018_to_5000_real_A}{input}{fig:city_input} 
-    % \addSubFigEighth{channel_gated/night2day_58_5018_to_5000_fake_B}{Ours}{fig:city_ours} 
-    % \addSubFigEighth{munit_baseline_all/night2day_58_5018_to_5000_fake_B}{MUNIT Conditioning all layers}{fig:city_munit}
-    % \addSubFigEighth{our_baseline_all/night2day_58_5018_to_5000_fake_B}{Our Architecture Conditioning all layers}{fig:bag_3}
-    % \addSubFigEighth{acgan_baseline_all/night2day_58_5018_to_5000_fake_B}{ACAN (our Architecture Conditioning all layers) }{fig:bag_3}
-    \caption{Results on the multi-task generation problem with Segmentation2Cityscapes and Day2Night. \ow{seems like this is missing 1. two generators, and 2. one generator. instead it seems more like an ablation study on our method, which is not the point. would be more impressive to show it matches 2 generators and 1 generator totally fails.}}
-    \label{fig:multi-task_day2night}
-    \vspace{-3mm}
-\end{figure}
+%     \includegraphics[width=.18\linewidth]{final_images/channel_gated/night2day_35_3106_to_3109_real_A.jpg} &
+%     \includegraphics[width=.18\linewidth]{munit_baseline_all/night2day_35_3106_to_3109_fake_B} &
+%     \includegraphics[width=.18\linewidth]{our_baseline_all/night2day_35_3106_to_3109_fake_B} &
+%     \includegraphics[width=.18\linewidth]{acgan_baseline_all/night2day_35_3106_to_3109_fake_B} & 
+%     \includegraphics[width=.18\linewidth]{channel_gated/night2day_35_3106_to_3109_fake_B}\\
+    
+%     \begin{subfigure}[t]{.18\linewidth}\caption{\small Input}\label{fig:daynightinput}\end{subfigure} &
+%     \begin{subfigure}[t]{.18\linewidth}\caption{\small Enc-Dec Concat (All)}\label{fig:daynightinput}\end{subfigure} &
+%     \begin{subfigure}[t]{.18\linewidth}\caption{\small Concat (All)}\label{fig:daynightinput}\end{subfigure} &
+%     \begin{subfigure}[t]{.18\linewidth}\caption{\small Concat(All)+Aux-Class}\label{fig:daynightinput}\end{subfigure} &
+%     \begin{subfigure}[t]{.18\linewidth}\caption{\small Ours}\label{fig:daynightinput}\end{subfigure}\\
+% \end{tabular}
+%     % \addSubFigEighth{channel_gated/cityscapes_95_real_A}{input}{fig:city_input} 
+%     % \addSubFigEighth{channel_gated/cityscapes_95_fake_B}{Ours}{fig:city_ours} 
+%     % \addSubFigEighth{munit_baseline_all/cityscapes_95_fake_B}{MUNIT Conditioning all layers}{fig:city_munit}
+%     % \addSubFigEighth{our_baseline_all/cityscapes_95_fake_B}{Our Architecture Conditioning all layers}{fig:bag_3}
+%     % \addSubFigEighth{acgan_baseline_all/cityscapes_95_fake_B}{ACAN (our Architecture Conditioning all layers) }{fig:bag_3}
+%     % \caption{Various Methods for Cityscapes for Multi-Task Experiment}
+%     % \label{fig:multi-task_cityscapes}
+%     % \vspace{-3mm}
+%     % \addSubFigEighth{channel_gated/night2day_58_5018_to_5000_real_A}{input}{fig:city_input} 
+%     % \addSubFigEighth{channel_gated/night2day_58_5018_to_5000_fake_B}{Ours}{fig:city_ours} 
+%     % \addSubFigEighth{munit_baseline_all/night2day_58_5018_to_5000_fake_B}{MUNIT Conditioning all layers}{fig:city_munit}
+%     % \addSubFigEighth{our_baseline_all/night2day_58_5018_to_5000_fake_B}{Our Architecture Conditioning all layers}{fig:bag_3}
+%     % \addSubFigEighth{acgan_baseline_all/night2day_58_5018_to_5000_fake_B}{ACAN (our Architecture Conditioning all layers) }{fig:bag_3}
+%     \caption{Results on the multi-task generation problem with Segmentation2Cityscapes and Day2Night. \ow{seems like this is missing 1. two generators, and 2. one generator. instead it seems more like an ablation study on our method, which is not the point. would be more impressive to show it matches 2 generators and 1 generator totally fails.}}
+%     \label{fig:multi-task_day2night}
+%     \vspace{-3mm}
+% \end{figure*}
 
 
-\begin{table}[ht]
-\caption{Evaluation on Cityscapes for Multi-Task scenario. A pre-trained segmentation network~\cite{} performs a semantic segmentation on generated images, and the result is compared to the ground truth.} % title of Table
-\small
-\centering % used for centering table
-% \begin{tabular}{|c|c|c|c|} % centered columns (4 columns)
-\begin{tabular}{p{3cm}p{1cm}p{1cm}p{1cm}} % centered columns (4 columns)
-% \hline
-\toprule
-\textbf{Model} & \textbf{Per-pixel acc.} &  \textbf{Per-class acc.} & \textbf{Class IOU} \\%heading
-\midrule
-Pix2pix \cite{isola2016image2image} & 66 \%  & 0.23 & 0.17 \\ % inserting body of the table
-\midrule
-Ours(Channel-Gate) & 68.4 \%  & 0.23 & 0.18 \\
-\midrule
-Concat(All),Aux-class & 67.5 \% & 0.2 & 0.16 \\
-\midrule
-Concat(All) & 60.2 \% & 0.18 & 0.16 \\
-\midrule
-Enc-Dec, Concat(All) & 60 \% & 0.16 & 0.15 \\
-\bottomrule %inserts single line
-\end{tabular}
-\label{table:1d_G} % is used to refer this table in the text
-\end{table}
+% \begin{table}[ht]
+% \caption{Evaluation on Cityscapes for Multi-Task scenario. A pre-trained segmentation network~\cite{} performs a semantic segmentation on generated images, and the result is compared to the ground truth.} % title of Table
+% \small
+% \centering % used for centering table
+% % \begin{tabular}{|c|c|c|c|} % centered columns (4 columns)
+% \begin{tabular}{p{3cm}p{1cm}p{1cm}p{1cm}} % centered columns (4 columns)
+% % \hline
+% \toprule
+% \textbf{Model} & \textbf{Per-pixel acc.} &  \textbf{Per-class acc.} & \textbf{Class IOU} \\%heading
+% \midrule
+% Pix2pix \cite{isola2016image2image} & 66 \%  & 0.23 & 0.17 \\ % inserting body of the table
+% \midrule
+% Ours(Channel-Gate) & 68.4 \%  & 0.23 & 0.18 \\
+% \midrule
+% Concat(All),Aux-class & 67.5 \% & 0.2 & 0.16 \\
+% \midrule
+% Concat(All) & 60.2 \% & 0.18 & 0.16 \\
+% \midrule
+% Enc-Dec, Concat(All) & 60 \% & 0.16 & 0.15 \\
+% \bottomrule %inserts single line
+% \end{tabular}
+% \label{table:1d_G} % is used to refer this table in the text
+% \end{table}
 
-\subsection{Multi-Task Generations: }
-We also evaluate two previously shown image to image translation tasks, using the same network. 
+\subsection{Multi-Task Generation }
+We also evaluate two previously shown image-to-image translation tasks, using the {\em same} network. 
 %Since our network is robust enough to be able to generate images conditioned on class and modulation of which blocks to use, it can further be used to generate images which are different in tasks such as the same network
 We try to solve both segmentation map $\rightarrow$ street scene, and day $\rightarrow$ night image translation tasks using the same generator. 
 As we can see in \figref{fig:multi-task_day2night}, our model (Channel-Gate) is able to perform both tasks while the other techniques generate mixed results. 
 
-In case of Encoder Decoder architecture \cite{huang2018multimodal} conditioned on all layers the discriminator became too powerful after a while and the training progressed with only the L1 loss which caused the blurry generations in the case of segmentation maps to real image synthesis as evident from the figure. The other baselines based on our skinny resnet architecture failed to generate realistic images in the case of the task of day2night.
+In case of Encoder-Decoder architecture \cite{huang2018multimodal} conditioned on all layers, the discriminator became too powerful after a while and the training progressed with only the L1 loss which caused the blurry generations in the case of segmentation maps to real image synthesis as evident from the figure. The other baselines based on our \todo{SkinnyResNet} architecture failed to generate realistic images in the case of the task of day2night.
 
 
 
