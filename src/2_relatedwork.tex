@@ -1,8 +1,7 @@
 \begin{figure*}[t]
     \centering
-    \includegraphics[width=\linewidth]{paper_images/arch_inject.pdf}
-    \caption{{\bf Conditioning injection variants.}
-    Conditioning information can be incorporated naively in a generator architecture through simple concatenation in {\bf (left)} the input layer only or {\bf (mid-left)} in all layers. {\bf (middle)} The network can be further encouraged to use the conditioning through a learned network, either a classification objective for categorical conditioning~\cite{XX,XX} or a regression objective for continuous conditioning. {\bf (Mid-right)} We investigate training a network on the conditioning signal, which predicts parameters which are used to guide softly-gated units in the main network. {\bf (Right)} These conditioning options -- concatenation, auxiliary classifier/latent regressor, and our gated conditioning -- can be correspondingly applied to a discriminator.\label{fig:arch-inj} }
+    \includegraphics[width=\linewidth]{paper_images/arch_gate.pdf}
+    \caption{{\bf Incorporating soft-gating into residual blocks.} \rz{Order got changed, may or may not need to add key for hadamard product} {\bf (Top-left)} A ``vanilla" residual block without gated conditioning parameters modifies signal $x$ into $x+\mathcal{H}(x)$. {\bf (Top-mid)} The full $\mathcal{H}(x)$ block is softly-gated by scalar parameter $\alpha$. {\bf (Top-right)} Each channel is softly-gated by vector parameter $\mathbf{\alpha}$. {\bf (Bot-left)} Adaptive Instance Normalization applied after the whole residual operation involves both a scaling and a bias. {\bf (Bot-mid, Bot-right)} A bias can be added to either block-wise or channel-wise gating. We find that channel-wise gating (without added bias) to empirically produces the best results.\label{fig:arch-gate} }
     % \vspace{-4mm}
 \end{figure*}
 

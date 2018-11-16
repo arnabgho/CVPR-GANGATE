@@ -1,17 +1,26 @@
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=\linewidth]{paper_images/arch_inject.pdf}
+    \caption{{\bf Conditioning injection variants.}
+    Conditioning information can be incorporated naively in a generator architecture through simple concatenation in {\bf (left)} the input layer only or {\bf (mid-left)} in all layers. {\bf (middle)} The network can be further encouraged to use the conditioning through a learned network, either a classification objective for categorical conditioning~\cite{odena2016conditional,chen2016infogan} or a regression objective for continuous conditioning. {\bf (Mid-right)} We investigate training a network on the conditioning signal, which predicts parameters which are used to guide softly-gated units in the main network. {\bf (Right)} These conditioning options -- concatenation, auxiliary classifier/latent regressor, and our gated conditioning -- can be correspondingly applied to a discriminator.\label{fig:arch-inj} }
+    % \vspace{-4mm}
+\end{figure*}
+
 \section{Introduction}
 Generative methods have made huge strides in the last few years driven by the success of Variational Autoencoders (VAEs)~\cite{kingma2013auto} and Generative Adversarial Networks (GANs)~\cite{goodfellow2014generative}. 
 These methods can generate impressive results but one major challenge is that quality degrades quickly when the diversity of training data (e.g., number of object/scene classes) increases. 
-It is a common practice in this domain to train different models for different datasets \cite{goodfellow2014generative,isola2016image2image,progressiveGAN,zhu2017toward,zhu2017unpaired,...,...,...}, meaning the number of parameters scales linearly with the number of classes. 
-A study performed in \cite{ghosh2017multi} demonstrated that even in a simple 1D Mixture of Gaussians settings, state-of-the-art GAN techniques were not able to generate samples from all the components of the mixture. 
+It is a common practice in the domain of image conditional generations to train different models for different datasets \cite{goodfellow2014generative,isola2016image2image,karras2017progressive,zhu2017toward,zhu2017unpaired,wang2018video} meaning the number of parameters scales linearly with the number of classes. 
+% A study performed in \cite{ghosh2017multi,metz2017unrolledGAN} demonstrated that even in a simple 1D \& 2D Mixture of Gaussians settings, state-of-the-art GAN techniques were not able to generate samples from all the components of the mixture. 
 %However their proposed method still involved training multiple generators.
+An ideal scenario in such settings would involve a single network which could share parts of the network responsible for operations shared between the various classes, while unsharing the discrete parts of the network which are responsible for class specific operations.
 
-%
-Veit et al.~\cite{veit2016residual} performed incision experiments on a pretrained ResNet architecture \cite{he2016deep}, demonstrating that certain paths in the network played a more important role for certain classes, inferring that ResNets behave like an ensemble of several partially disjoint networks for image classification. 
+Such a scenario was analyzed in the realm of Image Classification by Veit et al.~\cite{veit2016residual} where they performed incision experiments on a pretrained ResNet architecture \cite{he2016deep}, demonstrating that certain paths in the network played a more important role for certain classes, inferring that ResNets behave like an ensemble of several partially disjoint networks for image classification. 
 In this paper we analyze the implications of the observations of \cite{veit2016residual} on a Generative Modeling scenario. 
-We analyze GANs on a 1D Mixture of Gaussians dataset, and discover that the removal of certain blocks of the generator correspond to the disappearance of certain modes in the generated distribution.
+We analyze GANs on a 1D Mixture of Gaussians dataset as used in \cite{ghosh2017multi}, and discover that the removal of certain blocks of the generator correspond to the disappearance of certain modes in the generated distribution.
 We thus introduce a simple {\em soft gating} mechanism where based on the conditioning input (e.g., the class of the object) a hypernetwork predicts which parts of ResNet to use for that particular conditioning.
-We explore and analyze different types of gating, including a {\em blockwise} and {\em channelwise} gating, a multiplicative and a scale+bias types of soft weighting as well as other related method like AdaIn~\cite{huang2017arbitrary,huang2018multimodal}. We show that a channelwise multiplicative gating performs best for our task. We further show that better results are obtained if gating is applied not not only for a ResNet-based generator but also for a ResNet discriminator.
-%
+We explore and analyze different types of gating, including a {\em blockwise} and {\em channelwise} gating, a multiplicative and a scale+bias types of soft weighting as well as other related methods like AdaIn~\cite{huang2017arbitrary,huang2018multimodal}. We show that a channelwise multiplicative gating performs best for our task. We further show that better results are obtained if gating is applied not not only for a ResNet-based generator but also for a ResNet discriminator.
+
 
 We further introduce a new task of generating multi-class images from rough outline scribbles where gating is particularly useful due to class ambiguities in the mapping. Fig.~\ref{fig:teaser} (top left) shows one such example where the same simple scribble yields different outputs of a generator conditioned on ten different classes.
 In the case of the InfoGAN~\cite{chen2016infogan} setting, which was previously shown to produce limited texture variation~\cite{ghosh2017multi} with naive concatenation-based conditioning, our method produces diverse generations, as shown in Fig.~\ref{fig:teaser} (top right).
@@ -40,6 +49,9 @@ In addition, we also introduce the {\em multi-task image-to-image translation}. 
 % We evaluate our gating approach on a number of applications \todo{...}
 % \ow{discuss evaluation and findings}
 %
+
+
+
 In summary, our contributions are:
 \begin{itemize}
 \item An in-depth analysis of the role of gating networks in generative modeling.
