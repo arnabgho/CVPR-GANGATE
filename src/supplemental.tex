@@ -1,5 +1,5 @@
 
-\section*{Supplemental material}
+\section{Supplemental material}
 
 
 \subsection{InfoGAN based Model}
@@ -63,6 +63,9 @@ The next set of experiments were performed to judge the robustness of the Gate S
 \end{figure*}
 
 
+
+\subsection{1D Mixture of Gaussians Dataset}
+In order to understand the behavior of the various residual blocks, we first perform a very simple synthetic experiment, much easier than generating high-dimensional complex images. We consider a distribution of 1D Gaussian Mixture \cite{bishop2007pattern} having five mixture components with modes at 10, 20, 60, 80 and 110, and standard deviations of 3, 3, 2, 2 and 1, respectively. While the first two modes overlap significantly, the fifth mode stands isolated as shown in \figref{fig:1d_ground}. We train our resnet block based GAN model using 1 million samples from this distribution and generate 1 million samples from the trained model. In order to compare the learned distribution with the ground truth distributions, we first estimate them using bins over the data points and create the histograms. These histograms are carefully created using different bin sizes and the best bin (found to be 0.1) is chosen. The generated distribution from the trained model corresponds very closely to the ground truth distribution \figref{fig:1d_gen}. The interesting aspect was that although the network was deeper (16 layers of residual blocks) than required for similar experiments in MAD-GAN \cite{ghosh2017multi}, Mode Regularized GAN \cite{che2016mode} and Unrolled GAN \cite{metz2017unrolledGAN}, there were only 4 neurons in each residual block with 16 layers of 4 neurons each in the generator and discriminator compared to fully connected versions in which there consisted of connections between 256 neurons in the preceding layer to 256 neurons in the current layer. Thus although the number of parameters were much less, the network learnt the distribution quite accurately.
 
 
 \subsection{1-D network architecture}
