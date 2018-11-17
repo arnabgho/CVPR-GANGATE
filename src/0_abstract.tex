@@ -1,11 +1,17 @@
 \begin{abstract}
-We propose a method that allows us to generate images belonging to multiple domains using a single network. 
-Our approach is based on a GAN framework with two separate branches, a fully residual generator and discriminator, and a separate smaller gating network.
-The gating network selects residual blocks from the generator and discriminator based on some conditioning. 
-We show that such an approach is able to produce high quality multi-class image generation, both in an class-conditioned image-to-image translation task, as well as in an unsupervised image generation task where diversity is learned.
-This method allows for significantly smaller model sizes than previous multi-class approaches by taking advantage of similarities across classes. 
-We analyze our gating network to show that it leads to subnetworks based on the residual blocks that are active for a particular class.
+\vspace{-8mm}
+We investigate different variants to inject conditioning variables in GAN architectures and propose a simple mechanism to learn these injections through `gating' over residual blocks. We show that learning a gating function allows us to generate plausible samples in multiclass scenarios of the image-to-image translation task.
+In addition, we propose a new task of `outline' (sketch with no information about internal structure) to `image' translation, and demonstrate the effectiveness of the gating mechanism on this task, along with on standard `sketch' to `images' and `day' to `night' tasks. 
+We also show that the gating provides a mechanism for the InfoGAN objective to maximize mutual information in an effective way in challenging datasets, allowing it to produce diverse generations for image-to-image translation. 
+We demonstrate that our approach is able to generate high quality multiclass image translations, outperforming prior state of the art methods.
+
+%We propose a method that allows us to generate images belonging to multiple domains using a single network.
+%Our approach is based on a GAN framework with two separate branches, a fully residual generator and discriminator, and a separate smaller gating network.
+%The gating network selects residual blocks from the generator and discriminator based on some conditioning.
+%We show that such an approach is able to produce high quality multi-class image generation, both in an class-conditioned image-to-image translation task, as well as in an unsupervised image generation task where diversity is learned.
+%This method allows for significantly smaller model sizes than previous multi-class approaches by taking advantage of similarities across classes. 
+%We analyze our gating network to show that it leads to subnetworks based on the residual blocks that are active for a particular class.
 %This approach as well as helps inject low dimensional information into a network more effectively than just concatenating channel-wise after replication to match the image dimension. 
-Information theoretic results also show it to be a much stronger form of conditioning than naive concatenation. 
-We apply our approach on a novel setting of multi-class outline-to-image generation, where baseline solutions fail to generate good results, while our model successfully tackles the multi-class image generation setting. 
+%Information theoretic results also show it to be a much stronger form of conditioning than naive concatenation. 
+%We apply our approach on a novel setting of multi-class outline-to-image generation, where baseline solutions fail to generate good results, while our model successfully tackles the multi-class image generation setting. 
 \end{abstract}

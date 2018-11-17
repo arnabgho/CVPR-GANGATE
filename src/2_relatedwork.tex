@@ -3,13 +3,11 @@
     \includegraphics[width=\linewidth]{paper_images/arch_gate.pdf}
     \caption{
     % {\bf Incorporating soft-gating into residual blocks.} \rz{Order got changed, may or may not need to add key for hadamard product}
-    {\bf (Top-left)} A ``vanilla" residual block without gated conditioning parameters modifies signal $x$ into $x+\mathcal{H}(x)$. Conditioning with concatenation uses this setup. {\bf (Top-mid)} The $\mathcal{H}(x)$ block is softly-gated by scalar parameter $\alpha$ and shift $\beta$. {\bf (Top-right)} Only the gating is used, without bias. {\bf (Bot-left)} Adaptive Instance Normalization~\cite{huang2017arbitrary} applies a channel-wise scaling and shifting after an instance normalization layer. {\bf (Bot-mid)} Channel-wise gating adds restrictions to the range of $\mathbf{\alpha}$. {\bf (Bot-right)} We find that channel-wise gating (without added bias) to empirically produce the best results.\label{fig:arch-gate} }
+    {\bf (Top-left)} A ``vanilla" residual block without gated conditioning parameters modifies signal $x$ into $x+\mathcal{H}(x)$. Conditioning with concatenation uses this setup. {\bf (Top-mid)} The $\mathcal{H}(x)$ block is softly-gated by scalar parameter $\alpha$ and shift $\beta$. {\bf (Top-right)} Only the gating is used, without bias. {\bf (Bot-left)} Adaptive Instance Normalization~\cite{huang2017arbitrary} applies a channel-wise scaling and shifting after an instance normalization layer. {\bf (Bot-mid)} Channel-wise gating adds restrictions to the range of $\mbox{\boldmath $\alpha$}$. {\bf (Bot-right)} We find that channel-wise gating (without added bias) to empirically produce the best results.\label{fig:arch-gate} }
     % \vspace{-4mm}
 \end{figure*}
 
 \section{Related Work}
-\paragraph{Mode Collapse} is a major challenge for GANs \cite{goodfellow2014generative}, where a the diversity of the generated results is limited and only a portion of the training set being utilized. Several techniques deal with this issue, the best performing among those include Spectral Normalization \cite{miyato2018spectral} which normalizes the spectral norms of the layers to stabilize training, MAD-GAN \cite{ghosh2017multi} which introduces multiple generators, BicycleGAN \cite{zhu2017toward} which reconstructs back the latent code from the generation using two cycles. MUNIT \cite{huang2018multimodal} introduces factorized latent space for content and style for producing variations.
-\ow{not clear to me why it starts with mode collapse... dangerous as we also have it in our results, except the infogan case. I think that this should be changed into an infogan related work section and moved below.}
 
 \paragraph{Conditioned Image Generation}
 Pix2pix \cite{isola2016image2image} introduced a set of tasks whereby the pixels of the input in a different domain corresponded to the pixels of the generated image.
@@ -17,12 +15,19 @@ As a result, image-to-image translation methods have exploded in popularity, as 
 However, one problem with the original Pix2pix formulation is that the quality degrades quickly with increased class diversity. 
 We build upon these ideas by proposing a new architecture and gating scheme that allows for high quality multiclass image generation. 
 
+\paragraph{Mode Collapse} is a major challenge for GANs \cite{goodfellow2014generative}, where the diversity of the generated results is limited and only a portion of the training set is utilized. 
+Several techniques deal with this issue, the best performing among those include Spectral Normalization \cite{zhang2018self,miyato2018spectral} which normalizes the spectral norms of the layers to stabilize training, MAD-GAN \cite{ghosh2017multi} which introduces multiple generators, BicycleGAN \cite{zhu2017toward} which reconstructs the latent code from the generation using two cycles, and MUNIT \cite{huang2018multimodal} which introduces a factorized latent space for content and style for producing variations.
+
+An alternative proposal is to add a predictor from the output to the conditioner, to prevent the model from ignoring the condition. This has been explored in the classification setting in Auxiliary-Classifier GAN (ACGAN)~\cite{odena2016conditional} and regression setting with InfoGAN~\cite{chen2016infogan} and BiGAN (``latent regressor" model)~\cite{dumoulin2016adversarially,donahue2016adversarial}, and is one half of the BicycleGAN model~\cite{zhu2017toward}. We explore a complementary approach of architectural modification.
+
+% \ow{not clear to me why it starts with mode collapse... dangerous as we also have it in our results, except the infogan case. I think that this should be changed into an infogan related work section and moved below.}
+
 %but needed far more details such as in the case of edge to handbags generation task it needed texture strokes inside the bag as well to be able to produce high quality diverse generations
 %Other forms of conditioning have been introduced in \cite{wang2018video} whereby rough triangles and sparse edges are enough to generate high quality videos. We explore the situation in which the input scribble is extremely sparse and multiple classes can have very similar input scribbles for instance in the case of balls the input scribble is just the outline in the shape of a circle.
 
 %Our architecture also differs from previous art in the form of the architecture whereby all the blocks are residual including the downsampling and upsampling. Previous literature mostly used the residual blocks in the bottleneck layer of an Encoder Decoder structure. The number of channels in the networks doesn't change with the change of resolution as in the original Resnet architecture \cite{he2016deep} in order to ease the learning of the gating mechanism. 
 
-\paragraph{Gating Mechanisms} 
+\paragraph{Gating Mechanisms}
 %Residual Networks \cite{he2016deep} introduced a new set of architectures that enabled training of very deep networks.
 Prior work has demonstrated that in ResNets, some paths are more important for particular classes~\cite{veit2016residual}, and has used this to develop a hard gating mechanism~\cite{veit2018adaptive}.
 We provide a further analysis of gating mechanisms, in the context of GAN image generation, as opposed to image classification.
@@ -34,7 +39,7 @@ We evaluate AdaIn style gating among other possible choices with our fully resid
 
 Another gating mechanism, FiLM~\cite{perez2017film}, was introduced in the context of Visual Question Answering.
 In this case, the gating mechanism is conditioned on the input question.
-Gating also plays an important role in natural language processing, LSTMs \cite{hochreiter1997long} and GRU \cite{cho2014learning}.
+Gating also plays an important role in natural language processing: LSTMs \cite{hochreiter1997long} and GRU \cite{cho2014learning}.
 
 
 % The seminal work by \cite{miyato2018spectral}, introduced spectral normalization which normalizes the weights of the network such that the maximum eigen value of the resulting set of weights is bounded. It helped enormously in stabilizing the training of GANs and albeit they only applied spectral normalization to the discriminator, SA-GAN \cite{zhang2018self} applied it to both the generator and discriminator and showed superior generative modeling performance over several tasks. SA-GAN further introduced the self attention layer based on the innovative transformer network and showed not only better geometric properties being modeled by the GAN but also allowing Multi-Class generations.

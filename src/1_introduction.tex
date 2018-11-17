@@ -13,19 +13,23 @@ These methods can generate impressive results but one major challenge is that qu
 It is a common practice in the domain of image conditional generations to train different models for different datasets \cite{goodfellow2014generative,isola2016image2image,karras2017progressive,zhu2017toward,zhu2017unpaired,wang2018video} meaning the number of parameters scales linearly with the number of classes. 
 % A study performed in \cite{ghosh2017multi,metz2017unrolledGAN} demonstrated that even in a simple 1D \& 2D Mixture of Gaussians settings, state-of-the-art GAN techniques were not able to generate samples from all the components of the mixture. 
 %However their proposed method still involved training multiple generators.
-An ideal scenario in such settings would involve a single network which could share parts of the network responsible for operations shared between the various classes, while unsharing the discrete parts of the network which are responsible for class specific operations.
+An ideal scenario in such settings would involve a single network which could share parts responsible for similar operations across classes while unsharing the discrete parts of the network which are responsible for class specific operations.
 
-Such a scenario was analyzed in the realm of Image Classification by Veit et al.~\cite{veit2016residual} where they performed incision experiments on a pretrained ResNet architecture \cite{he2016deep}, demonstrating that certain paths in the network played a more important role for certain classes, inferring that ResNets behave like an ensemble of several partially disjoint networks for image classification. 
-In this paper we analyze the implications of the observations of \cite{veit2016residual} on a Generative Modeling scenario. 
+Such a scenario was analyzed in the realm of image classification by Veit et al.~\cite{veit2016residual} where they performed incision experiments on a pretrained ResNet architecture \cite{he2016deep}, demonstrating that certain paths in the network played a more important role for certain classes.
+%inferring that ResNets behave like an ensemble of several partially disjoint networks for image classification. 
+In this paper we analyze implications of this observation in a generative modeling scenario. 
 We analyze GANs on a 1D Mixture of Gaussians dataset as used in \cite{ghosh2017multi}, and discover that the removal of certain blocks of the generator correspond to the disappearance of certain modes in the generated distribution.
 
-We thus introduce a simple {\em soft gating} mechanism where based on the conditioning input (e.g., the class of the object) a hypernetwork predicts which parts of ResNet to use for that particular conditioning.
-We explore and analyze different types of gating, including a {\em blockwise} and {\em channelwise} gating, a multiplicative and a scale+bias types of soft weighting as well as other related methods like AdaIn~\cite{huang2017arbitrary,huang2018multimodal}. We show that a channelwise multiplicative gating performs best for our task. We further show that better results are obtained if gating is applied not only for a ResNet-based generator but also for a ResNet discriminator.
+Motivated by this, we introduce a simple {\em soft gating} mechanism where based on the conditioning input a hypernetwork predicts which parts of ResNet to use for that particular conditioning.
+We explore and analyze different types of gating, including a {\em blockwise} and {\em channelwise} gating, each with multiplicative and affine forms of soft weighting, as well as other related methods like AdaIn~\cite{huang2017arbitrary,huang2018multimodal}, and InfoGAN~\cite{chen2016infogan}. We show that a channelwise multiplicative gating performs best for our task, and better results can be obtained by applying gating not only to the generator but also to the discriminator.
 
 
-We further introduce a new task of generating multi-class images from rough outline scribbles where gating is particularly useful due to class ambiguities in the mapping. Fig.~\ref{fig:teaser} (top left) shows one such example where the same simple scribble yields different outputs of a generator conditioned on ten different classes.
-In the case of the InfoGAN~\cite{chen2016infogan} setting, which was previously shown to produce limited texture variation~\cite{ghosh2017multi} with naive concatenation-based conditioning, our method produces diverse generations, as shown in Fig.~\ref{fig:teaser} (top right).
-In addition, we also introduce the {\em multi-task image-to-image translation}. In its original setting \cite{isola2016image2image}, different trained models had to be introduced for the different translation tasks. Our gating mechanism enables good performance on each task by activating appropriate task-specific blocks and channels (Fig.~\ref{fig:teaser} bottom).
+To evaluate our approach, we introduce a new task of generating multi-class images from rough outline scribbles where gating is particularly useful due to class ambiguities in the mapping. Fig.~\ref{fig:teaser} (top left) shows one such example where the same simple scribble yields different outputs of a generator conditioned on ten different classes.
+In the unsupervised InfoGAN~\cite{chen2016infogan} setting where classes are not known apriori, conditioning is in the form of a random vector. 
+While this scenario was previously shown to produce limited texture variation~\cite{ghosh2017multi} for challenging datasets using naive concatenation-based conditioning, our gating based method is able to produce diverse generations, as shown in Fig.~\ref{fig:teaser} (top right).
+In addition, we also evaluate our approach on {\em multi-task image-to-image translation}. 
+In its original setting \cite{isola2016image2image}, different trained models were used for each translation tasks. 
+Our gating mechanism enables good performance of a single network on multiple tasks by activating appropriate task-specific blocks and channels (Fig.~\ref{fig:teaser} bottom).
 
 %whereby the rough scribbles divulge almost no information about the class.
 
@@ -54,7 +58,9 @@ In addition, we also introduce the {\em multi-task image-to-image translation}. 
 
 
 In summary, our contributions are:
+\setlength\itemsep{0px}
 \begin{itemize}
+\itemsep0em 
 \item An in-depth analysis of the role of gating networks in generative modeling.
 \item A novel architecture using a gating hypernetwork that can generate diverse multi-class results both when classes are known a-priori, or are derived from the data in an unsupervised fashion (similar to InfoGAN~\cite{chen2016infogan}).
 %\item Incision experiments on a trained Residual Generator based GAN on the 1D Mixture of Gaussians to show certain blocks correspond to certain modes in the generated distribution.

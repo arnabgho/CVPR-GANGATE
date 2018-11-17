@@ -3,40 +3,38 @@
     \centering
     \includegraphics[width=\linewidth,trim={2.2cm 0 1.8cm 0},clip]{paper_images/mog.pdf}
     % \includegraphics[width=\linewidth]{paper_images/mog.pdf}
-    \caption{{\bf 1D Mixture of Gaussians experiment} {\bf (Left)} Samples from a residual network (blue-dotted) closely approximate the training distribution (black). {\bf (Middle)} Removing one residual block removes one mode of the predicted distribution. {\bf (Right)} Removing two blocks results in drop of two modes. Note that the samples stay ``on-manifold" of the ground truth distribution.
+    \caption{{\bf 1D Mixture of Gaussians experiment} {\bf (Left)} Samples from a residual network (blue-dotted) closely approximate the training distribution (black). {\bf (Middle)} Removing one residual block removes one mode of the predicted distribution. {\bf (Right)} Removing two blocks results in drop of two modes. Note that the samples stay mostly ``on-manifold" of the ground truth distribution.
     }\label{fig:onedexperiment}
     % \vspace{-4mm}
 \end{figure*}
 
 \section{Gated Generative Adversarial Network}
 \label{sec:methods}
-We consider image-to-image translation problems, mapping input image $A$ to output $B \in \mathds{R}^{h\times w\times 3}$, with the benefit of a conditioning vector ${\bf y} \in \mathds{R}^{d}$. We learn this mapping with multi-layer generator $\widehat{B}=\mathcal{G}(A,{\bf y})$. We refer to the feature map at each channel as $X_l\in \mathds{R}^{h_l\times w_l\times c_l}$, where $h_l \times w_l$ is the spatial size of the feature map, and $c_l$ is the number of channels in the layer. 
+We consider image-to-image translation problems, mapping input image $A$ to output $B \in \mathds{R}^{h\times w\times 3}$, with the benefit of a conditioning vector ${\bf y} \in \mathds{R}^{d}$. We learn this mapping with multilayer generator $\mathcal{G}(A,{\bf y})$ to produce output $\widehat{B}$. We refer to the feature map at each channel as $X_l\in \mathds{R}^{h_l\times w_l\times c_l}$, where $h_l \times w_l$ is the spatial size of the feature map, and $c_l$ is the number of channels in the layer. 
 % The total channels in the network is $C = \sum_l C_l$. 
 The conditioning vector ${\bf y}$ can be categorical, expressed as a 1-hot vector, or a continuous vector. 
 % , ground truth output $B \in \mathds{R}^{H\times W\times 3}$, generator $\mathcal{G}$, output $\widehat{B}=\mathcal{G}(A,y)$.
 
 % \subsection{Conditioning injection variants}
 
-The structure of the generator plays a critical role in the effectiveness of the conditioning. We systematically explore several variants, as illustrated in Figure~\ref{fig:arch-inj}. 
+The method that conditioning vector ${\bf y}$ is integrated plays a critical role in the effectiveness of the conditioning. We systematically explore several variants, as illustrated in Figure~\ref{fig:arch-inj}.
 
-
+% There are many ways that the conditioning vector $\bf y$ can be integrated into the network. 
 
 \subsection{Naive concatenation}
-There are many ways that the conditioning vector $\bf y$ can be integrated into the network. 
-The most straightforward is to spatially replicate the vector into a tensor of appropriate size, and concatenate it to the input layer~\cite{zhu2017toward,choi2017stargan}.
-
-A potential weakness of concatenating at the {\em input only} is the large distance between the conditioner and the output, which can lead to the generator ignoring the conditioner during learning. A possible solution is to simply concatenate the conditioner into every layer. This has been previously explored in ~\cite{zhu2017toward}.
+The most straightforward method is to spatially replicate the vector into a tensor of appropriate size and concatenate it to the input layer~\cite{zhu2017toward,choi2017stargan}. A potential weakness
+% of concatenating at the {\em input only}
+is the large distance between the conditioner and the output, which can lead to the generator easily ignoring the conditioner during learning. A previously explored solution~\cite{zhu2017toward} is to simply concatenate the conditioner into every layer.
 
 \subsection{Recovering the conditioning vector}
 
 % \paragraph{Auxiliary classifier or latent regressor for conditioning vector recovery}
-An alternative is to encourage the use of the conditioner through the objective function. 
-For example, this can be done by the addition of a hypernetwork, $Q$, charged with recovering the conditioner from the output $\widehat{B}$. 
-A loss $\ell$ is added to the optimization between ground truth $y$ and predicted $\hat{y}$.
-This term encourages the output to contain enough information about the conditioner. This approach has been explored in the classification setting with Auxiliary-Classifier GAN (ACGAN)~\cite{odena2016conditional}, regression setting with InfoGAN~\cite{chen2016infogan} and BiGAN (``latent regressor" model)~\cite{dumoulin2016adversarially,donahue2016adversarial}, and is one half of the BicycleGAN model~\cite{zhu2017toward}. Here we explore an alternative and more general approach, based on gating.
+A technique for encouraging adherence to the conditioner is through the objective function. As seen in Fig.~\ref{fig:arch-inj}, a hypernetwork $\mathcal{Q}$ predicts conditioner from output image $\widehat{B}$. 
+% A loss is added to the optimization between ground truth $y$ and predicted $\hat{y}$, and has been explored in 
+The added loss between ground truth ${\bf y}$ and predicted $\hat{ {\bf y}}$ encourages the output to contain enough information about the conditioner. This has been previously explored in both the class-conditional~\cite{odena2016conditional,choi2017stargan,salimans2016improved} and latent code-conditional settings~\cite{chen2016infogan,donahue2016adversarial,zhu2017toward}. In our experiments, we find that this technique improves upon naive concatenation. We further explore a complementary approach, modifying the architecture of the main generator.
 
-\ow{what is the problem with the above approach that leads us to propose the next}
-\eli{I added a sentence but maybe we can say something stronger? Did we ever try ACGAN on the multi-class task? If yes and it didn't work, maybe mention here?}
+% \ow{what is the problem with the above approach that leads us to propose the next}
+% \eli{I added a sentence but maybe we can say something stronger? Did we ever try ACGAN on the multi-class task? If yes and it didn't work, maybe mention here?}
 
 \subsection{Conditioning with Soft-Gating (Proposed)}
 %The methods above do not fundamentally modify the structure of the network. 
@@ -62,7 +60,7 @@ We can apply the operation channel-wise as well, using a predicted vector {\bold
 This provides additional degrees of freedom for network $\mathcal{F}$, to choose to switch specific changes to channels ``on" or ``off". This is denoted as follows:
 
 \begin{align}
-X + \mbox{\boldmath $\alpha$} \odot \mathcal{H}(X), 
+X + \mbox{\boldmath $\alpha$} \odot \mathcal{H}(X), \text{where } \mbox{\boldmath $\alpha$} \in [0,1]^c 
 \end{align}
 
 where $\odot$ is channel-wise multiplication. We make the corresponding changes in the discriminator as well. 
@@ -72,7 +70,7 @@ Intuitively, in GANs, this can enable the discriminator to select blocks which e
 Some blocks can be shared across regions in the conditioning vector, whereas other blocks can specialize for a given class.
 
 We empirically find that channel-wise gating provides the strongest results. 
-For completeness, we additionally explore incorporating shifting after the soft-gating, either block-wise using a scalar $\beta$ per layer, or channel-wise using a vector {\boldmath $\beta$} per layer.
+For completeness, we additionally explore incorporating shifting after the soft-gating, either block-wise using a scalar $\beta \in [-1,1]$ per layer, or channel-wise using a vector $\mbox{\boldmath $\beta$} \in [-1, 1]^c}$ per layer.
 
 
 %\rz{sentence summarizing why or how}
@@ -132,7 +130,7 @@ In this case, we constrained each element of {\boldmath $\alpha$} and {\boldmath
   \includegraphics[width=\linewidth]{paper_images/gen_real_vs_acc.pdf} 
   \end{minipage}
 %   \vspace{-2mm}
-  \caption{\small {\bf Accuracy vs Realism on Outline$\rightarrow$Image task.} We measure generation accuracy by using a pretrained network to check whether the generated image is of the correct class and realism using the real vs. fake test from ~\cite{zhang2016colorful,isola2016image2image} (higher is better for both metrics). Our SkinnyResNet architecture outperforms Encoder-Decoder network, inspired by MUNIT~\cite{huang2018multimodal}. We perform a thorough ablation on our architecture, and find that channel-wise gating achieves high accuracy and higher realism.
+  \caption{\small {\bf Accuracy vs Realism on Outline$\rightarrow$Image task.} We measure generation accuracy by using a pretrained network to check whether the generated image is of the correct class and realism using the user-judged real vs. fake test from ~\cite{zhang2016colorful,isola2016image2image} conducted on Amazon Mechanical Turk (AMT). Higher is better for both metrics. Our SkinnyResNet architecture outperforms the Encoder-Decoder network, inspired by MUNIT~\cite{huang2018multimodal}. We perform a thorough ablation on our architecture, and find that channel-wise gating achieves high accuracy and higher realism. The right figure shows the correlation between the two tasks.
   }
 %   \vspace{-5mm}
   \label{fig:acc_vs_real}
@@ -144,9 +142,10 @@ In this case, we constrained each element of {\boldmath $\alpha$} and {\boldmath
 
 \subsection{Information Theoretic Benefits of Gating}
 \label{sec:infoGAN} 
-Injecting ${\bf y}$ at various layers essentially glues the generation process and the conditioning together.
-This helps in avoiding the pathological situation whereby disentanglement over the tasks or modes suffer because of an easier approximation, $G(A,y) \approx G(A), \forall y$, learned by the generator. This can be better understood using the {\em data processing inequality}~\cite{cover2012informationTheory}. It says that, for any sequential transformation process (\eg feedforward neural networks) over a random variable $y \to f_1(y) \to  x$ (could be of any length); the dependence between $x$ and the transformed random variable decreases as the separation increases. 
-This implies that the mutual information $I(x, f_1(y)) \geq I (x, y)$. Since injection at multiple layers brings ${\bf y}$ closer to the generation $G(A,y)$, it is straightforward conclude that $I_{Gate}(G(A,y), y) \geq I(G(A,y), y)$. This is true for any variant of injection, making conditioning and the generation more dependent. A similar approach has recently been suggested to avoid latent collapse in VAEs~\cite{Dieng18skipVAE}.
+Injecting ${\bf y}$ at various layers essentially glues the generation with the conditioning.
+This helps in avoiding the pathological situation whereby disentanglement over the classes or modes suffer due to an easier approximation, $G(A,y) \approx G(A), \forall y$, learned by the generator. This can be better understood using the {\em data processing inequality}~\cite{cover2012informationTheory}. It says that, for any sequential transformation process (\eg feedforward neural networks) over a random variable $y \to f_1(y) \to  x$ (could be of any length); the dependence between $x$ and the transformed random variable decreases as the separation increases. 
+This implies that the mutual information $I(x, f_1(y)) \geq I (x, y)$. Since injection at multiple layers brings ${\bf y}$ closer to the generation $G(A,y)$, it is straightforward to conclude that $I_{Gate}(G(A,y), y) \geq I(G(A,y), y)$. Note, training of generator itself try to make ${\bf y}$ dependent on the generation. Thus, both naive concatenation in all layers and various forms of gating (refer Fig.~\ref{fig:arch-inj} and ~\ref{fig:arch-gate}) explicitly help the model to achieve this. However, experimentally we observe better dependence when the injection is learned using our gating mechanism. %We also show in the experiment (Sec.~\ref{sec:multimodal}) that with gating, InfoGAN produces diverse generations for image-to-image translation, which otherwise was not possible as the naive conditioning (input concatenation) eventually gets absorbed in the generation making it agnostic to variations in the condition.
+A similar approach has recently been suggested to avoid latent collapse in VAEs~\cite{Dieng18skipVAE}. 
 
 % \pd{not sure how to justify that gating is better using this argument. however, this argument does justify that injection matters. also, the mutual information argument is stronger in case of infoGAN. open to suggestion.}
 
