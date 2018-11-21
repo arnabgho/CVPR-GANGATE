@@ -44,6 +44,8 @@
 \newcommand{\eli}[1]{\textbf{\textcolor[rgb]{0.1, 0.6, 0.1}{ES: #1}}}
 \newcommand{\ag}[1]{\textbf{\textcolor[rgb]{0.45, 0.25, 0.1}{AG: #1}}}
 
+%% spacehacks
+%\setlength{\abovecaptionskip}{-5pt}
 
 
 \newcommand{\addSubFigHalf}[3]{\begin{subfigure}[t]{.45\linewidth}
@@ -64,7 +66,7 @@
 }
 \newcommand{\addSubFigSixthLabel}[3]{\begin{subfigure}[t]{.12\linewidth}
    %\rotatebox{90}{#2}
-   \includegraphics[width=\linewidth]{#1}
+   \includegraphics[width=.9\linewidth]{#1}
    \caption{#2}\label{#3}\end{subfigure}
 }
 
@@ -97,7 +99,12 @@
 \begin{document}
 
 %%%%%%%%% TITLE
-\title{GAN-Gate: Gated residual GANs for Class-Conditioned Image Generation}
+\title{GAN-Gate: Conditional Gating for Image-to-Image Translation}
+% \title{GAN-Gate: Gated Residual GANs for Class-Conditioned Image Generation}
+% GAN-Gate: Conditionally-Gated Residual Networks for Image-to-Image Translation
+% GAN-Gate: Softly-Gated Conditional Residual Networks for Image-to-Image Translation
+% GAN-Gate: Conditionally Soft-Gated Residual Networks for Image-to-Image Translation
+%GAN-Gate: Conditional Gating for Image-to-Image Translation
 
 \author{Arnab Ghosh\\
 University of Oxford\\
@@ -140,7 +147,9 @@ Adobe Research\\
     \centering
     % \includegraphics[width=.9\linewidth,height=4.5cm]{images/teaser/sketch.jpg}
     \includegraphics[width=1.\linewidth]{paper_images/fig1.pdf}
-    \captionof{figure}{Our proposed GAN-gate method enables a variety of challenging image-to-image translation tasks, such as {\bf (top-left)} multiclass outline-to-image translation, conditioned on object class {\bf (top-right)} multimodal edge map-to-handbag translation, conditioned on a learned latent code, and {\bf (bottom)} disjoint multitask image-to-image translation. Each of the three examples uses a single generator and discriminator.\label{fig:teaser}}
+    \captionof{figure}{Our proposed GAN-gate method enables a variety of challenging image-to-image translation tasks, such as {\bf (top-left)} multiclass outline-to-image translation, conditioned on object class {\bf (top-right)} multimodal edge map-to-handbag translation, conditioned on a learned latent code, and {\bf (bottom)} disjoint multitask image-to-image translation, conditioned on task. Each of the three examples uses a single generator and discriminator.\label{fig:teaser}
+    % \vspace{-2mm}
+    }
 \end{center}%
 }]
     
@@ -164,7 +173,7 @@ Adobe Research\\
 \bibliography{src/gatedblocks}
 }
 
-\input{src/supplemental.tex}
+% \input{src/supplemental.tex}
 
 \end{document}
 
